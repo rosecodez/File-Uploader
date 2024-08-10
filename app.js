@@ -4,12 +4,15 @@ const path = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const session = require("express-session");
+const pgSession = require("connect-pg-simple")(session);
 const passport = require("passport");
-const expressSession = require("express-session");
-const { PrismaSessionStore } = require("@quixo3/prisma-session-store");
+const LocalStrategy = require("passport-local").Strategy;
+const bcrypt = require("bcrypt");
 const { PrismaClient } = require("@prisma/client");
 
 require("dotenv").config();
+
+const prisma = new PrismaClient();
 
 const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");
@@ -32,42 +35,43 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use(
-  expressSession({
-    cookie: {
-      maxAge: 7 * 24 * 60 * 60 * 1000, // ms
-    },
-    secret: "a santa at nasa",
-    resave: true,
-    saveUninitialized: true,
-    store: new PrismaSessionStore(new PrismaClient(), {
-      checkPeriod: 2 * 60 * 1000, //ms
-      dbRecordIdIsSessionId: true,
-      dbRecordIdFunction: undefined,
+  session({
+    store: new pgSession({
+      pool: prisma.$pool,
+      tableName: "Session",
     }),
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      maxAge: 1000 * 60 * 60 * 24,
+    },
   })
 );
 
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use("/", indexRouter);
-app.use("/users", usersRouter);
+passport.use(
+  new LocalStrategy(async (username, password, done) => {
+    try {
+      const user = await prisma.user.findFirst({ where: { username } });
 
-passport.use(async (username, password, done) => {
-  try {
-    const user = await prisma.user.findFirst({ where: { username } });
+      if (!user) {
+        return done(null, false, { message: "Incorrect username" });
+      }
 
-    if (!user) {
-      return done(null, false, { message: "Incorrect username" });
+      const isValidPassword = await bcrypt.compare(password, user.password);
+      if (!isValidPassword) {
+        return done(null, false, { message: "Incorrect password" });
+      }
+
+      return done(null, user);
+    } catch (error) {
+      return done(error);
     }
-    if (user.password !== password) {
-      return done(null, false, { message: "Incorrect password" });
-    }
-    return done(null, user);
-  } catch (error) {
-    return done(err);
-  }
-});
+  })
+);
 
 passport.serializeUser((user, done) => {
   done(null, user.id);
@@ -75,12 +79,15 @@ passport.serializeUser((user, done) => {
 
 passport.deserializeUser(async (id, done) => {
   try {
-    const user = await prisma.user.findFirst({ where: { id } });
+    const user = await prisma.user.findUnique({ where: { id } });
     done(null, user);
   } catch (err) {
     done(err);
   }
 });
+
+app.use("/", indexRouter);
+app.use("/", usersRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -89,7 +96,6 @@ app.use(function (req, res, next) {
 
 // error handler
 app.use(function (err, req, res, next) {
-  // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get("env") === "development" ? err : {};
 
