@@ -20,13 +20,18 @@ const usersRouter = require("./routes/users");
 const app = express();
 
 app.use((req, res, next) => {
-  res.locals.user = req.user;
+  console.log(`Received request: ${req.method} ${req.url}`);
   next();
 });
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
+
+app.get("/", (req, res) => {
+  console.log("Rendering layout view");
+  res.render("layout", { title: "My Page Title" });
+});
 
 app.use(logger("dev"));
 app.use(express.json());
@@ -44,7 +49,7 @@ app.use(
     resave: false,
     saveUninitialized: false,
     cookie: {
-      maxAge: 1000 * 60 * 60 * 24,
+      maxAge: 1000 * 60 * 60 * 24, // 1 day
     },
   })
 );
