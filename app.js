@@ -9,6 +9,7 @@ const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
 const bcrypt = require("bcrypt");
 const { PrismaClient } = require("@prisma/client");
+const expressLayouts = require("express-ejs-layouts");
 
 require("dotenv").config();
 
@@ -27,10 +28,10 @@ app.use((req, res, next) => {
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
+app.use(expressLayouts);
 
 app.get("/", (req, res) => {
-  console.log("Rendering layout view");
-  res.render("layout", { title: "My Page Title" });
+  res.render("content");
 });
 
 app.use(logger("dev"));
