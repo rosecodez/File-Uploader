@@ -6,21 +6,21 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <title>File Uploader</title>
 </head>
-<body class="flex justify-center flex-col mx-16 min-w-60">
-  <section id="header" class="pb-14 flex flex-wrap sticky top-0 items-center justify-between">
+<body class="flex justify-center flex-col mx-16 min-w-60 items-center">
+  <section id="header" class="pb-14 flex flex-wrap sticky top-0 items-center gap-16">
     <a href="/">
       <button class="p-3 border-solid rounded-tl-lg bg-violet-500 hover:bg-violet-600 active:bg-violet-700 focus:outline-none focus:ring focus:ring-violet-300">
       File Uploader
       </button>
     </a>
     <a href="/log-in">
-      <div class="hover:underline underline-offset-4 decoration-2 hover:underline decoration-violet-500">
+      <div class="text-blue-600 hover:underline underline-offset-4 decoration-2 hover:underline decoration-violet-500">
       Log in
       </div> 
     </a>
   </section>
 
-  <section id="page-content" class="flex flex-wrap items-center justify-center gap-16">
+  <section id="page-content" class="flex justify-center flex-wrap">
     <%- body %>
   </section>
 </body>
