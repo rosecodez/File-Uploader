@@ -11,10 +11,7 @@ exports.user_signup_get = asyncHandler(async (req, res, next) => {
 });
 
 exports.user_signup_post = [
-  body("email", "Email must be specified and valid")
-    .trim()
-    .isEmail()
-    .normalizeEmail(),
+  body("username", "Username must be specified and valid").trim().escape(),
   body("password", "Password must be specified and at least 10 characters long")
     .trim()
     .isLength({ min: 10 })
@@ -31,20 +28,21 @@ exports.user_signup_post = [
 
     try {
       const existingUser = await prisma.user.findUnique({
-        where: { email: req.body.email },
+        where: { username: req.body.username },
       });
 
       if (existingUser) {
         return res.status(400).render("sign-up-form", {
-          errors: [{ msg: "Email already in use" }],
+          errors: [{ msg: "username already in use" }],
           user: req.body,
         });
       }
 
       const hashedPassword = await bcrypt.hash(req.body.password, 10);
+
       const user = await prisma.user.create({
         data: {
-          email: req.body.email,
+          username: req.body.username,
           password: hashedPassword,
         },
       });
@@ -66,9 +64,14 @@ exports.user_login_get = asyncHandler(async (req, res, next) => {
 });
 
 exports.user_login_post = [
-  passport.authenticate("local", {
-    successRedirect: "/",
-    failureRedirect: "/log-in",
+  passport.authenticate("local", (err, user, info) => {
+    if (err) return next(err);
+    if (!user) return res.status(401).render("login", { error: info.message });
+
+    req.logIn(user, (err) => {
+      if (err) return next(err);
+      return res.redirect("/");
+    });
   }),
 ];
 
