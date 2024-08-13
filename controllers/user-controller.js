@@ -63,19 +63,20 @@ exports.user_login_get = asyncHandler(async (req, res, next) => {
   res.render("log-in-form");
 });
 
-exports.user_login_post = [
+exports.user_login_post = (req, res, next) => {
   passport.authenticate("local", (err, user, info) => {
     if (err) return next(err);
-    if (!user) return res.status(401).render("login", { error: info.message });
+    if (!user)
+      return res.status(401).render("log-in-form", { error: info.message });
 
     req.logIn(user, (err) => {
       if (err) return next(err);
       return res.redirect("/");
     });
-  }),
-];
+  })(req, res, next);
+};
 
-exports.user_logout_get = asyncHandler(async (req, res, next) => {
+exports.user_logout_get = asyncHandler(async (req, res) => {
   req.logout(function (err) {
     if (err) {
       return next(err);
