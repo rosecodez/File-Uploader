@@ -1,4 +1,3 @@
-const createError = require("http-errors");
 const express = require("express");
 const path = require("path");
 const cookieParser = require("cookie-parser");
@@ -7,51 +6,34 @@ const session = require("express-session");
 const { PrismaClient } = require("@prisma/client");
 const { PrismaSessionStore } = require("@quixo3/prisma-session-store");
 const passport = require("passport");
-const LocalStrategy = require("passport-local").Strategy;
 const bcrypt = require("bcrypt");
 const expressLayouts = require("express-ejs-layouts");
+const LocalStrategy = require("passport-local").Strategy;
+const createError = require("http-errors");
 
 require("dotenv").config();
 
 const prisma = new PrismaClient();
-
-const indexRouter = require("./routes/index");
-const usersRouter = require("./routes/users");
-
 const app = express();
-
-// Middleware for logging requests
-app.use((req, res, next) => {
-  console.log(`Received request: ${req.method} ${req.url}`);
-  next();
-});
 
 // View engine setup
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 app.use(expressLayouts);
-
-app.get("/", (req, res) => {
-  res.render("content");
-});
-
-app.use(logger("dev"));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
+app.set("layout", "layout");
 app.use(express.static(path.join(__dirname, "public")));
 
-// Set up Prisma session store
 const prismaSessionStore = new PrismaSessionStore(prisma, {
   checkPeriod: 2 * 60 * 1000,
   dbRecordIdIsSessionId: true,
 });
 
-// Session configuration
 app.use(
   session({
     cookie: {
       maxAge: 7 * 24 * 60 * 60 * 1000,
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
     },
     secret: process.env.SESSION_SECRET,
     resave: false,
@@ -67,7 +49,6 @@ app.use(passport.session());
 passport.use(
   new LocalStrategy(async (username, password, done) => {
     try {
-      console.log("Attempting login for:", username);
       const user = await prisma.user.findUnique({ where: { username } });
       if (!user) return done(null, false, { message: "Incorrect username" });
       const isValidPassword = await bcrypt.compare(password, user.password);
@@ -75,7 +56,6 @@ passport.use(
         return done(null, false, { message: "Incorrect password" });
       return done(null, user);
     } catch (error) {
-      console.error("Login error:", error);
       return done(error);
     }
   })
@@ -94,8 +74,26 @@ passport.deserializeUser(async (id, done) => {
   }
 });
 
-app.use("/", indexRouter);
+// Middleware for logging
+app.use((req, res, next) => {
+  res.locals.user = req.user;
+  next();
+});
+
+app.use(logger("dev"));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
+
+// Define routes
+const usersRouter = require("./routes/users");
 app.use("/", usersRouter);
+
+app.get("/", (req, res) => {
+  res.render("content", {
+    user: res.locals.user,
+  });
+});
 
 // Catch 404 and forward to error handler
 app.use((req, res, next) => {

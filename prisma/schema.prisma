@@ -8,7 +8,7 @@ datasource db {
 }
 
 model User {
-  id       Int       @id @default(autoincrement())
+  id       String    @id @default(uuid())
   username String    @unique
   password String
   Session  Session[]
@@ -18,7 +18,7 @@ model Session {
   id        String   @id @default(cuid())
   sid       String   @unique
   expiresAt DateTime
-  data      String
+  data      Json
   user      User     @relation(fields: [userId], references: [id])
-  userId    Int
+  userId    String
 }
