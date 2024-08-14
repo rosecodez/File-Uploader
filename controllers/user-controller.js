@@ -65,7 +65,7 @@ exports.user_login_get = asyncHandler(async (req, res, next) => {
 
 exports.user_login_post = [
   passport.authenticate("local", {
-    successRedirect: "/",
+    successRedirect: "/profile",
     failureRedirect: "/log-in",
   }),
 ];
@@ -82,4 +82,19 @@ exports.user_logout_get = asyncHandler(async (req, res, next) => {
       res.redirect("/log-in");
     });
   });
+});
+exports.user_profile_get = asyncHandler(async (req, res, next) => {
+  if (!req.user) {
+    return res.redirect("/log-in");
+  }
+
+  try {
+    const user = await prisma.user.findUnique({ where: { id: req.user.id } });
+    if (!user) {
+      return res.redirect("/log-in");
+    }
+    res.render("profile", { user });
+  } catch (err) {
+    return next(err);
+  }
 });

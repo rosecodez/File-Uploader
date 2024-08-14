@@ -87,7 +87,9 @@ app.use(cookieParser());
 
 // Define routes
 const usersRouter = require("./routes/users");
+const filesRouter = require("./routes/files");
 app.use("/", usersRouter);
+app.use("/profile/files", filesRouter);
 
 app.get("/", (req, res) => {
   res.render("content", {
