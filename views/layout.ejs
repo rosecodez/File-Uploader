@@ -16,17 +16,22 @@
 
     <% if (user) { %>
       <a href="/profile">
-        <div class="text-red-600 hover:underline underline-offset-4 decoration-2 hover:underline decoration-red-500">
+        <div class="text-violet-600 hover:underline underline-offset-4 decoration-2 hover:underline decoration-violet-500">
           Profile
         </div>
       </a>
-      <a href="/profile/files/new-file">
-        <div class="text-red-600 hover:underline underline-offset-4 decoration-2 hover:underline decoration-red-500">
+      <a href="/drive">
+        <div class="text-violet-600 hover:underline underline-offset-4 decoration-2 hover:underline decoration-violet-500">
+          Drive
+        </div>
+      </a>
+      <a href="/profile/folders/files/new-file">
+        <div class="text-violet-600 hover:underline underline-offset-4 decoration-2 hover:underline decoration-violet-500">
           Upload
         </div>
       </a>
       <a href="/log-out">
-        <div class="text-red-600 hover:underline underline-offset-4 decoration-2 hover:underline decoration-red-500">
+        <div class="text-violet-600 hover:underline underline-offset-4 decoration-2 hover:underline decoration-violet-500">
           Log out
         </div>
       </a>
@@ -39,8 +44,6 @@
     <% } %>
   </section>
 
-  <section id="page-content" class="flex justify-center flex-wrap">
-    <%- body %> 
-  </section>
+  <%- body %> 
 </body>
 </html>
