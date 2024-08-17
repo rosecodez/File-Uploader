@@ -4,7 +4,7 @@ const { body, validationResult } = require("express-validator");
 const bcrypt = require("bcrypt");
 const session = require("express-session");
 const passport = require("passport");
-const prisma = new PrismaClient();
+const prisma = require("../prisma/prisma");
 
 exports.user_signup_get = asyncHandler(async (req, res, next) => {
   res.render("sign-up-form");

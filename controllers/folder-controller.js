@@ -1,6 +1,5 @@
-const { PrismaClient } = require("@prisma/client");
 const asyncHandler = require("express-async-handler");
-const prisma = new PrismaClient();
+const prisma = require("../prisma/prisma");
 
 exports.new_folder_get = asyncHandler(async (req, res, next) => {
   res.render("new-folder-form");
@@ -9,16 +8,18 @@ exports.new_folder_get = asyncHandler(async (req, res, next) => {
 exports.new_folder_post = asyncHandler(async (req, res, next) => {
   try {
     const { name } = req.body;
-    const userId = req.session.userId;
+    const userId = req.user.id;
 
-    const uploadedFolder = await prisma.folder.create({
+    await prisma.folder.create({
       data: {
         name,
-        userId,
+        user: {
+          connect: { id: userId },
+        },
       },
     });
 
-    res.status(201).json(uploadedFolder);
+    res.redirect("/drive");
   } catch (error) {
     res.status(500).json({ error: "Failed to create folder" });
   }

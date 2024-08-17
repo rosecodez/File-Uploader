@@ -27,6 +27,7 @@ model Session {
 
 model Folder {
   id        Int      @id @default(autoincrement())
+  name      String
   user      User     @relation(fields: [userId], references: [id])
   userId    String
   files     File[]
@@ -37,10 +38,10 @@ model Folder {
 model File {
   id        Int      @id @default(autoincrement())
   name      String
-  Folder    Folder?  @relation(fields: [folderId], references: [id])
+  user      User?    @relation(fields: [userId], references: [id])
+  userId    String?
+  folder    Folder?  @relation(fields: [folderId], references: [id])
   folderId  Int?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  User      User?    @relation(fields: [userId], references: [id])
-  userId    String?
 }
