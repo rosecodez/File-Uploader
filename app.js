@@ -101,7 +101,14 @@ app.get("/", (req, res) => {
     user: res.locals.user,
   });
 });
-
+app.use((req, res, next) => {
+  console.log("Session:", req.session);
+  next();
+});
+app.use((req, res, next) => {
+  res.locals.user = req.session.user;
+  next();
+});
 // Catch 404 and forward to error handler
 app.use((req, res, next) => {
   next(createError(404));

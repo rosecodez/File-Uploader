@@ -23,7 +23,7 @@
         <% } else if (action === 'new-file') { %>
             <%- include('new-file-form') %>
         <% } else { %>
-            <p>Welcome to your drive!</p>
+          <%- include('drive-content', { files: files, folders: folders }) %>
         <% } %>
     </div>
   </div>
