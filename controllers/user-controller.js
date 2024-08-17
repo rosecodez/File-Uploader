@@ -63,28 +63,26 @@ exports.user_login_get = asyncHandler(async (req, res, next) => {
   res.render("log-in-form");
 });
 
-exports.user_login_post = asyncHandler(async (req, res, next) => {
-  const authenticate = async (username, password) => {
-    const user = await prisma.user.findUnique({ where: { username } });
-
-    if (user && (await bcrypt.compare(password, user.password))) {
-      return user;
+exports.user_login_post = [
+  passport.authenticate("local", {
+    failureRedirect: "/log-in",
+    failureFlash: true,
+  }),
+  asyncHandler(async (req, res, next) => {
+    try {
+      const user = req.user;
+      if (user) {
+        req.session.user = { id: user.id, username: user.username };
+        console.log("Logged in user:", req.session.user);
+        res.redirect("/drive");
+      } else {
+        res.status(401).send("Invalid credentials");
+      }
+    } catch (error) {
+      next(error);
     }
-    return null;
-  };
-
-  const { username, password } = req.body;
-
-  const user = await authenticate(username, password);
-
-  if (user) {
-    req.session.user = { id: user.id, username: user.username };
-    console.log("Logged in user:", req.session.user);
-    res.redirect("/drive");
-  } else {
-    res.status(401).send("Invalid credentials");
-  }
-});
+  }),
+];
 
 exports.user_logout_get = asyncHandler(async (req, res, next) => {
   req.logout((err) => {
