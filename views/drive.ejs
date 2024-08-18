@@ -1,5 +1,5 @@
 <div id="drive" class="flex justify-center flex-wrap flex-row">
-    <div id="drive-left-panel" class="flex flex-col w-64 gap-6">
+    <div id="drive-left-panel" class="flex flex-col w-64 gap-4 flex-wrap ">
       <a href="/drive/folders/new-folder" id="new-folder-link">
         <div class="flex items-end gap-2">
           <img src="/images/icons8-folder-50.png" class="w-7" alt="Folder">
@@ -17,7 +17,7 @@
         </div>
       </a>
     </div>
-    <div id="drive-right-panel" class="w-96">
+    <div id="drive-right-panel" class="flex flex-col w-96 flex-wrap ">
         <% if (action === 'new-folder') { %>
             <%- include('new-folder-form') %>
         <% } else if (action === 'new-file') { %>

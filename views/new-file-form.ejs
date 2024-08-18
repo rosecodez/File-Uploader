@@ -1,15 +1,10 @@
 <div id="new-file-form" class="flex flex-row">
   <div class="flex flex-row items-baseline gap-4">
-    <img
-      src="/images/icons8-file-50.png"
-      class="w-7 self-start pt-8"
-      alt="File"
-    />
+    <img src="/images/icons8-file-50.png" class="w-7 self-start pt-8 "alt="File"/>
     <form
       method="POST"
       action="/drive/folders/files/new-file"
-      enctype="multipart/form-data"
-    >
+      enctype="multipart/form-data">
       <label for="name">Name</label>
       <input
         class="mb-4 mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-black-500 invalid:text-black-600 focus:invalid:border-black-500 focus:invalid:ring-black-500"
@@ -17,8 +12,7 @@
         id="name"
         placeholder="File name"
         name="name"
-        required
-      />
+        required/>
 
       <label for="file">File</label>
       <input
@@ -26,12 +20,10 @@
         type="file"
         id="file"
         name="file"
-        required
-      />
+        required/>
       <button
         class="mt-6 p-3 border-solid rounded-tl-lg bg-violet-500 hover:bg-violet-600 active:bg-violet-700 focus:outline-none focus:ring focus:ring-violet-300"
-        type="submit"
-      >
+        type="submit">
         Upload File
       </button>
     </form>

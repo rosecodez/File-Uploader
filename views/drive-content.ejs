@@ -1,25 +1,18 @@
-<div class="flex flex-col gap-4">
-    <h2>Folders</h2>
-    <ul>
-        <% folders.forEach(file => { %>
-            <li>
-                <a href="/drive/folders/<%= file.id %>">
-                    <%= file.name %>
-                </a>
-            </li>
-        <% }) %>
-    </ul>
-
-    <h2>Files</h2>
-    <ul>
-        <% files.forEach(file => { %>
-            <li>
-                <a href="/drive/files/<%= file.id %>">
-                    <%= file.name %>
-                </a>
-            </li>
-        <% }) %>
-    </ul>
-
-  </div>
-  
+<ul class="flex flex-col gap-4">
+    <% folders.forEach(file => { %>
+        <li class="flex flex-row gap-2 items-end">
+            <img src="/images/icons8-folder-50.png" class="w-7 self-start" alt="Folder">
+            <a href="/drive/folders/<%= file.id %>" class="text-blue-600 hover:underline underline-offset-4 decoration-2 hover:underline decoration-violet-500">
+                <%= file.name %>
+            </a>
+        </li>
+    <% }) %>
+    <% files.forEach(file => { %>
+        <li class="flex flex-row gap-2 items-end">
+            <img src="/images/icons8-file-50.png" class="w-7 self-start "alt="File"/>
+            <a href="/drive/files/<%= file.id %>" class="text-blue-600 hover:underline underline-offset-4 decoration-2 hover:underline decoration-violet-500">
+                <%= file.name %>
+            </a>
+        </li>
+    <% }) %>
+</ul>
