@@ -12,9 +12,7 @@
                 <a href="/drive/folders/<%= folder.id %>/rename">
                     <button>Rename</button>
                 </a>
-                <button onclick="showDeleteModal('<%= folder.id %>', '<%= folder.name %>')">Delete</button>
-
-
+                <button onclick="showDeleteModal('folder', '<%= folder.id %>', '<%= folder.name %>')">Delete</button>
             </div>
         </li>
     <% }) %>
@@ -32,7 +30,7 @@
                 <a href="/drive/files/<%= file.id %>/rename">
                     <button>Rename</button>
                 </a>
-
+                
                 <button onclick="showDeleteModal('file', '<%= file.id %>', '<%= file.name %>')">Delete</button>
             </div>
         </li>
@@ -53,16 +51,18 @@
 </div>
 
 <script>
-    function showDeleteModal(itemId, itemName) {
+    function showDeleteModal(itemType, itemId, itemName) {
         const deleteModal = document.getElementById('deleteModal');
         const deleteMessage = document.getElementById('deleteMessage');
         const deleteForm = document.getElementById('deleteForm');
 
         deleteMessage.textContent = `Are you sure you want to delete "${itemName}"?`;
-        deleteForm.action = `/drive/folders/${itemId}/delete`;
+
+        deleteForm.action = itemType === 'folder' ? `/drive/folders/${itemId}/delete` : `/drive/files/${itemId}/delete`;
 
         deleteModal.classList.remove('hidden');
     }
+
 
     function hideDeleteModal() {
         const deleteModal = document.getElementById('deleteModal');

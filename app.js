@@ -98,7 +98,7 @@ const filesRouter = require("./routes/files");
 app.use("/", usersRouter);
 app.use("/drive", driveRouter);
 app.use("/drive/folders", foldersRouter);
-app.use("/drive/folders/files", filesRouter);
+app.use("/drive/files", filesRouter);
 
 app.get("/", (req, res) => {
   res.render("content", {
