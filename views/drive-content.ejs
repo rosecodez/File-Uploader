@@ -1,18 +1,30 @@
 <ul class="flex flex-col gap-4">
     <% folders.forEach(file => { %>
-        <li class="flex flex-row gap-2 items-end">
-            <img src="/images/icons8-folder-50.png" class="w-7 self-start" alt="Folder">
-            <a href="/drive/folders/<%= file.id %>" class="text-blue-600 hover:underline underline-offset-4 decoration-2 hover:underline decoration-violet-500">
-                <%= file.name %>
-            </a>
+        <li class="flex flex-row gap-2 items-end justify-between">
+            <div id="folders-left-side" class="flex flex-row gap-2">
+                <img src="/images/icons8-folder-50.png" class="w-7 self-start" alt="Folder">
+                <a href="/drive/folders/<%= file.id %>" class="text-blue-600 hover:underline underline-offset-4 decoration-2 hover:underline decoration-violet-500">
+                    <%= file.name %>
+                </a>    
+            </div>
+            <div id="folders-right-side" class="flex gap-4">
+                <button>Rename</button>
+                <button>Delete</button>
+            </div>
         </li>
     <% }) %>
     <% files.forEach(file => { %>
-        <li class="flex flex-row gap-2 items-end">
-            <img src="/images/icons8-file-50.png" class="w-7 self-start "alt="File"/>
-            <a href="/drive/files/<%= file.id %>" class="text-blue-600 hover:underline underline-offset-4 decoration-2 hover:underline decoration-violet-500">
-                <%= file.name %>
-            </a>
+        <li class="flex flex-row gap-2 items-end justify-between">
+            <div id="files-left-side" class="flex flex-row gap-2 items-center">
+                <img src="/images/icons8-file-50.png" class="w-7 self-start "alt="File"/>
+                <a href="/drive/files/<%= file.id %>" class="text-blue-600 hover:underline underline-offset-4 decoration-2 hover:underline decoration-violet-500">
+                    <%= file.name %>
+                </a>    
+            </div>
+            <div id="files-right-side" class="flex gap-4 items-center">
+                <button>Rename</button>
+                <button>Delete</button>
+            </div>
         </li>
     <% }) %>
 </ul>
