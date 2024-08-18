@@ -52,11 +52,16 @@ exports.folder_delete_get = asyncHandler(async (req, res, next) => {
 
 exports.folder_delete_post = asyncHandler(async (req, res, next) => {
   try {
-    const folderId = req.params.folderId;
+    // convert params string to integer
+    const folderId = parseInt(req.params.id, 10);
     const userId = req.session.userId;
 
     if (!userId) {
       return res.status(401).json({ error: "User not authenticated" });
+    }
+
+    if (isNaN(folderId)) {
+      return res.status(400).json({ error: "Invalid folder ID" });
     }
 
     await prisma.folder.delete({

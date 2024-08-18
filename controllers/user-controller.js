@@ -71,9 +71,13 @@ exports.user_login_post = [
   asyncHandler(async (req, res, next) => {
     try {
       const user = req.user;
+
       if (user) {
+        req.session.userId = user.id;
         req.session.user = { id: user.id, username: user.username };
+
         console.log("Logged in user:", req.session.user);
+
         res.redirect("/drive");
       } else {
         res.status(401).send("Invalid credentials");

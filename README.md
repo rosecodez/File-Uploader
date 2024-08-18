@@ -8,5 +8,4 @@ In this project, I am building a stripped down version of Google Drive
 Difficulties encountered:
 
 - difficulty to add user to database with an id as "Int", for now I added the userId as "String"
-
-![alt text](image.png)
+- usage of `req.params` as string to integer for database use
