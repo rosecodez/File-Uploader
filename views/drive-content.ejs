@@ -3,15 +3,20 @@
         <li class="flex flex-row gap-2 items-end justify-between">
             <div id="folders-left-side" class="flex flex-row gap-2 items-center">
                 <img src="/images/icons8-folder-50.png" class="w-7 self-start" alt="Folder">
-                <a href="/drive/folders/<%= folder.id %>" class="text-blue-600 hover:underline underline-offset-4 decoration-2 hover:underline decoration-violet-500">
-                    <%= folder.name %>
-                </a>    
+                <span id="folder-name-<%= folder.id %>">
+                    <a href="/drive/folders/<%= folder.id %>" class="text-blue-600 hover:underline underline-offset-4 decoration-2 hover:underline decoration-violet-500">
+                        <%= folder.name %>
+                    </a>
+                </span>
+                <form id="folder-form-<%= folder.id %>" class="hidden" action="/drive/folders/<%= folder.id %>/rename" method="POST">
+                    <input type="text" name="name" class="border border-gray-300 rounded px-2 py-1" value="<%= folder.name %>">
+                    <button type="submit" class="px-2 py-1 bg-blue-500 text-white rounded">Save</button>
+                    <button type="button" onclick="cancelEdit('<%= folder.id %>', 'folder')" class="px-2 py-1 bg-gray-300 text-black rounded">Cancel</button>
+                </form>
             </div>
 
             <div id="folders-right-side" class="flex gap-4 items-center">
-                <a href="/drive/folders/<%= folder.id %>/rename">
-                    <button>Rename</button>
-                </a>
+                <button onclick="editItemName('<%= folder.id %>', 'folder')">Rename</button>
                 <button onclick="showDeleteModal('folder', '<%= folder.id %>', '<%= folder.name %>')">Delete</button>
             </div>
         </li>
@@ -21,16 +26,20 @@
         <li class="flex flex-row gap-2 items-end justify-between">
             <div id="files-left-side" class="flex flex-row gap-2 items-center">
                 <img src="/images/icons8-file-50.png" class="w-7 self-start" alt="File"/>
-                <a href="/drive/files/<%= file.id %>" class="text-blue-600 hover:underline underline-offset-4 decoration-2 hover:underline decoration-violet-500">
-                    <%= file.name %>
-                </a>    
+                <span id="file-name-<%= file.id %>">
+                    <a href="/drive/files/<%= file.id %>" class="text-blue-600 hover:underline underline-offset-4 decoration-2 hover:underline decoration-violet-500">
+                        <%= file.name %>
+                    </a>
+                </span>
+                <form id="file-form-<%= file.id %>" class="hidden" action="/drive/files/<%= file.id %>/rename" method="POST">
+                    <input type="text" name="name" class="border border-gray-300 rounded px-2 py-1" value="<%= file.name %>">
+                    <button type="submit" class="px-2 py-1 bg-blue-500 text-white rounded">Save</button>
+                    <button type="button" onclick="cancelEdit('<%= file.id %>', 'file')" class="px-2 py-1 bg-gray-300 text-black rounded">Cancel</button>
+                </form>
             </div>
 
             <div id="files-right-side" class="flex gap-4 items-center">
-                <a href="/drive/files/<%= file.id %>/rename">
-                    <button>Rename</button>
-                </a>
-                
+                <button onclick="editItemName('<%= file.id %>', 'file')">Rename</button>
                 <button onclick="showDeleteModal('file', '<%= file.id %>', '<%= file.name %>')">Delete</button>
             </div>
         </li>
@@ -63,9 +72,18 @@
         deleteModal.classList.remove('hidden');
     }
 
-
     function hideDeleteModal() {
         const deleteModal = document.getElementById('deleteModal');
         deleteModal.classList.add('hidden');
+    }
+
+    function editItemName(itemId, itemType) {
+        document.getElementById(`${itemType}-name-${itemId}`).classList.add('hidden');
+        document.getElementById(`${itemType}-form-${itemId}`).classList.remove('hidden');
+    }
+
+    function cancelEdit(itemId, itemType) {
+        document.getElementById(`${itemType}-name-${itemId}`).classList.remove('hidden');
+        document.getElementById(`${itemType}-form-${itemId}`).classList.add('hidden');
     }
 </script>

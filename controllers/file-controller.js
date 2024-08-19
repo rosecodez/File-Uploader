@@ -47,8 +47,7 @@ exports.file_delete_get = asyncHandler(async (req, res, next) => {
 });
 
 exports.file_delete_post = asyncHandler(async (req, res, next) => {
-  const fileId = parseInt(req.params.id, 10);
-  console.log(`Deleting file with ID: ${fileId}`);
+  const fileId = parseInt(req.params.id);
 
   try {
     await prisma.file.delete({
@@ -60,5 +59,21 @@ exports.file_delete_post = asyncHandler(async (req, res, next) => {
   } catch (error) {
     console.error("Error deleting file:", error.message);
     res.status(500).json({ error: "Failed to delete file" });
+  }
+});
+
+exports.file_rename_post = asyncHandler(async (req, res, next) => {
+  const fileId = parseInt(req.params.id);
+  const newName = req.body.name;
+
+  try {
+    await prisma.file.update({
+      where: { id: fileId },
+      data: { name: newName },
+    });
+    res.redirect("/drive");
+  } catch (error) {
+    console.log("Error renaming file", error);
+    res.status(500).send("Error renaming file");
   }
 });

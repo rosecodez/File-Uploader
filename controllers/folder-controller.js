@@ -53,7 +53,7 @@ exports.folder_delete_get = asyncHandler(async (req, res, next) => {
 exports.folder_delete_post = asyncHandler(async (req, res, next) => {
   try {
     // convert params string to integer
-    const folderId = parseInt(req.params.id, 10);
+    const folderId = parseInt(req.params.id);
     const userId = req.session.userId;
 
     if (!userId) {
@@ -74,5 +74,21 @@ exports.folder_delete_post = asyncHandler(async (req, res, next) => {
   } catch (error) {
     console.error("Error deleting folder:", error.message);
     res.status(500).json({ error: "Failed to delete folder" });
+  }
+});
+
+exports.folder_rename_post = asyncHandler(async (req, res, next) => {
+  const folderId = parseInt(req.params.id);
+  const newName = req.body.name;
+
+  try {
+    await prisma.folder.update({
+      where: { id: folderId },
+      data: { name: newName },
+    });
+    res.redirect("/drive");
+  } catch (error) {
+    console.log("Error renaming folder", error);
+    res.status(500).send("Error renaming folder");
   }
 });

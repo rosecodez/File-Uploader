@@ -11,4 +11,7 @@ router.post("/new-file", upload.single("file"), fileController.new_file_post);
 router.get("/:id/delete", fileController.file_delete_get);
 router.post("/:id/delete", fileController.file_delete_post);
 
+// rename folder
+router.post("/:id/rename", fileController.file_rename_post);
+
 module.exports = router;
