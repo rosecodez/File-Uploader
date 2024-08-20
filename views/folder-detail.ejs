@@ -1,0 +1,58 @@
+<li class="flex flex-row gap-2">
+  <div class="flex">
+      <a href="/drive">
+        <img src="/images/icons8-go-back-24.png" class="w-7 self-start pt-8" alt="Back">
+      </a>
+  </div>
+  <div class="flex flex-col gap-8">
+      <div id="folders-top-side" class="flex flex-row gap-2 items-center">
+          <img src="/images/icons8-folder-50.png" class="w-7 self-start" alt="File"/>
+          <span id="folder-name-<%= folder.id %>">
+              <div class="text-black-600 hover:underline underline-offset-4 decoration-2 hover:underline decoration-violet-500">
+                  <%= folder.name %>
+              </div>
+          </span>
+          <form id="folder-form-<%= folder.id %>" class="hidden" action="/drive/folders/<%= folder.id %>/rename" method="POST">
+              <input type="text" name="name" class="border border-gray-300 rounded px-2 py-1" value="<%= folder.name %>">
+              <button type="submit" class="px-2 py-1 bg-black-500 text-white rounded">Save</button>
+              <button type="button" onclick="cancelEdit('<%= folder.id %>', 'folder')" class="px-2 py-1 bg-gray-300 text-black rounded">Cancel</button>
+          </form>
+      </div>
+
+      <div id="folders-bottom-side" class="flex gap-4 items-center">
+          <button onclick="editItemName('<%= folder.id %>', 'folder')">Rename</button>
+          <button onclick="showDeleteModal('folder', '<%= folder.id %>', '<%= folder.name %>')">Delete</button>
+      </div>    
+  </div>
+ 
+</li>
+
+
+<script>
+  function showDeleteModal(itemType, itemId, itemName) {
+      const deleteModal = document.getElementById('deleteModal');
+      const deleteMessage = document.getElementById('deleteMessage');
+      const deleteForm = document.getElementById('deleteForm');
+
+      deleteMessage.textContent = `Are you sure you want to delete "${itemName}"?`;
+
+      deleteForm.action = itemType === 'folder' ? `/drive/folders/${itemId}/delete` : `/drive/folders/${itemId}/delete`;
+
+      deleteModal.classList.remove('hidden');
+  }
+
+  function hideDeleteModal() {
+      const deleteModal = document.getElementById('deleteModal');
+      deleteModal.classList.add('hidden');
+  }
+
+  function editItemName(itemId, itemType) {
+      document.getElementById(`${itemType}-name-${itemId}`).classList.add('hidden');
+      document.getElementById(`${itemType}-form-${itemId}`).classList.remove('hidden');
+  }
+
+  function cancelEdit(itemId, itemType) {
+      document.getElementById(`${itemType}-name-${itemId}`).classList.remove('hidden');
+      document.getElementById(`${itemType}-form-${itemId}`).classList.add('hidden');
+  }
+</script>

@@ -19,4 +19,7 @@ router.post("/:id/delete", folderController.folder_delete_post);
 // rename folder
 router.post("/:id/rename", folderController.folder_rename_post);
 
+// folder detail
+router.get("/:id/folder-detail", folderController.folder_detail_get);
+
 module.exports = router;

@@ -92,3 +92,24 @@ exports.folder_rename_post = asyncHandler(async (req, res, next) => {
     res.status(500).send("Error renaming folder");
   }
 });
+
+exports.folder_detail_get = asyncHandler(async (req, res, next) => {
+  try {
+    const folderId = parseInt(req.params.id);
+    const folder = await prisma.folder.findUnique({
+      where: { id: folderId },
+    });
+
+    if (!folder) {
+      return res.status(404).render("404", { message: "Folder not found" });
+    }
+
+    res.render("drive", {
+      action: "folder-detail",
+      folderDetail: folder,
+    });
+  } catch (error) {
+    console.error("Failed to retrieve folder details:", error);
+    res.status(500).json({ error: "Failed to retrieve folder details" });
+  }
+});

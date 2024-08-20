@@ -77,3 +77,24 @@ exports.file_rename_post = asyncHandler(async (req, res, next) => {
     res.status(500).send("Error renaming file");
   }
 });
+
+exports.file_detail_get = asyncHandler(async (req, res, next) => {
+  try {
+    const fileId = parseInt(req.params.id);
+    const file = await prisma.file.findUnique({
+      where: { id: fileId },
+    });
+
+    if (!file) {
+      return res.status(404).render("404", { message: "Folder not found" });
+    }
+
+    res.render("drive", {
+      action: "file-detail",
+      fileDetail: file,
+    });
+  } catch (error) {
+    console.error("Failed to retrieve file details:", error);
+    res.status(500).json({ error: "Failed to retrieve file details" });
+  }
+});
