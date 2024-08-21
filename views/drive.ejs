@@ -1,47 +1,80 @@
 <div id="drive" class="flex justify-center flex-wrap flex-row gap-10">
-  <div id="drive-left-panel" class="flex flex-col w-30 gap-4 flex-wrap ">
-      <a href="/drive/folders/new-folder" id="new-folder-link">
+  <div id="drives" class="flex justify-center flex-wrap flex-row gap-10">
+      <div id="drive-left-panel" class="flex flex-col w-30 gap-4 flex-wrap ">
+
+        <a href="/drive/folders/new-folder" id="new-folder-link">
           <div class="flex items-end gap-2">
-              <img src="/images/icons8-folder-50.png" class="w-7" alt="Folder">
-              <p class="text-blue-600 hover:underline underline-offset-4 decoration-2 hover:underline decoration-violet-500">
-                  New folder
-              </p>
+            <img src="/images/icons8-folder-50.png" class="w-7" alt="Folder">
+            <p class="text-blue-600 hover:underline underline-offset-4 decoration-2 hover:underline decoration-violet-500">
+              New folder
+            </p>
           </div>
-      </a>
-      <a href="/drive/folders/files/new-file" id="new-file-link">
+        </a>
+
+        <a href="/drive/folders/files/new-file" id="new-file-link">
           <div class="flex items-end gap-2">
-              <img src="/images/icons8-file-50.png" class="w-7" alt="File">
-              <p class="text-blue-600 hover:underline underline-offset-4 decoration-2 hover:underline decoration-violet-500">
-                  New file
-              </p>
+            <img src="/images/icons8-file-50.png" class="w-7" alt="File">
+            <p class="text-blue-600 hover:underline underline-offset-4 decoration-2 hover:underline decoration-violet-500">
+              New file
+            </p>
           </div>
-      </a>
+        </a>
+    </div>
+
+
+    <div id="drive-right-panel" class="flex flex-col w-96 flex-wrap ">
+      <% if (action === 'new-folder') { %>
+        <%- include('new-folder-form') %>
+      <% } else if (action === 'new-file') { %>
+        <%- include('new-file-form') %>
+      <% } else if (action === 'file-detail' && fileDetail) { %>
+        <%- include('file-detail', { file: fileDetail }) %>
+      <% } else if (action === 'folder-detail' && folderDetail) { %>
+        <%- include('folder-detail', { folder: folderDetail }) %>
+      <% } else { %>
+        <%- include('drive-content', { files: files, folders: folders }) %>
+      <% } %>
+    </div>
+
   </div>
 
-  <div id="drive-right-panel" class="flex flex-col w-96 flex-wrap ">
-    <% if (action === 'new-folder') { %>
-      <%- include('new-folder-form') %>
-    <% } else if (action === 'new-file') { %>
-      <%- include('new-file-form') %>
-    <% } else if (action === 'file-detail' && fileDetail) { %>
-      <%- include('file-detail', { file: fileDetail }) %>
-    <% } else if (action === 'folder-detail' && folderDetail) { %>
-      <%- include('folder-detail', { folder: folderDetail }) %>
-    <% } else { %>
-      <%- include('drive-content', { files: files, folders: folders }) %>
-    <% } %>
+  <div id="button">
+    <button id="sort" data-sort="name" >Sort ascending</button>
   </div>
+
 </div>
-  </div>
-  <script>
-    document.getElementById('new-folder-link').addEventListener('click', function(event) {
-        event.preventDefault();
-        document.getElementById('drive-right-panel').innerHTML = `<%- include('new-folder-form') %>`;
-    });
 
-    document.getElementById('new-file-link').addEventListener('click', function(event) {
-        event.preventDefault();
-        document.getElementById('drive-right-panel').innerHTML = `<%- include('new-file-form') %>`;
+<script>
+  document.getElementById('new-folder-link').addEventListener('click', function(event) {
+    event.preventDefault();
+    document.getElementById('drive-right-panel').innerHTML = `<%- include('new-folder-form') %>`;
+  });
+
+  document.getElementById('new-file-link').addEventListener('click', function(event) {
+    event.preventDefault();
+    document.getElementById('drive-right-panel').innerHTML = `<%- include('new-file-form') %>`;
+  });
+
+  let isAscending = true; 
+
+    document.getElementById('sort').addEventListener('click', function() {
+        // Select all items
+        let items = document.querySelectorAll('#drive-right-panel .item');
+
+        let itemsArray = Array.from(items);
+      
+        itemsArray.sort((a, b) => {
+            let comparison = a.textContent.trim().localeCompare(b.textContent.trim());
+            return isAscending ? comparison : -comparison;
+        });
+
+        let parent = document.getElementById('drive-right-panel');
+        itemsArray.forEach(item => parent.appendChild(item));
+        itemsArray.forEach(item => item.style.listStyleType = 'none');
+
+        isAscending = !isAscending;
+        document.getElementById('sort').textContent = isAscending ? 'Sort ascending' : 'Sort descending';
     });
+    
 </script>
   

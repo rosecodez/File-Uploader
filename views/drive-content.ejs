@@ -1,6 +1,6 @@
 <ul class="flex flex-col gap-4">
     <% folders.forEach(folder => { %>
-        <li class="flex flex-row gap-2 items-end justify-between">
+        <li class="item" class="flex flex-row gap-2 items-end justify-between">
             <div id="folders-left-side" class="flex flex-row gap-2 items-center">
                 <img src="/images/icons8-folder-50.png" class="w-7 self-start" alt="Folder">
                 <span id="folder-name-<%= folder.id %>">
@@ -23,7 +23,7 @@
     <% }) %>
 
     <% files.forEach(file => { %>
-        <li class="flex flex-row gap-2 items-end justify-between">
+        <li class="item" flex flex-row gap-2 items-end justify-between">
             <div id="files-left-side" class="flex flex-row gap-2 items-center">
                 <img src="/images/icons8-file-50.png" class="w-7 self-start" alt="File"/>
                 <span id="file-name-<%= file.id %>">
