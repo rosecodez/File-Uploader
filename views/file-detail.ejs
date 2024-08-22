@@ -4,7 +4,7 @@
           <img src="/images/icons8-go-back-24.png" class="w-7 self-start pt-8" alt="Back">
         </a>
     </div>
-    <div class="flex flex-col gap-8">
+    <div class="flex flex-col gap-2">
         <div id="files-top-side" class="flex flex-row gap-2 items-center">
             <img src="/images/icons8-file-50.png" class="w-7 self-start" alt="File"/>
             <span id="file-name-<%= file.id %>">
@@ -20,8 +20,8 @@
         </div>
 
         <div id="files-bottom-side" class="flex gap-4 items-center">
-            <button onclick="editItemName('<%= file.id %>', 'file')">Rename</button>
-            <button onclick="showDeleteModal('file', '<%= file.id %>', '<%= file.name %>')">Delete</button>
+            <button class="text-sm" onclick="editItemName('<%= file.id %>', 'file')">Rename</button>
+            <button class="text-sm" onclick="showDeleteModal('file', '<%= file.id %>', '<%= file.name %>')">Delete</button>
         </div>    
     </div>
    
