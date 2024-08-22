@@ -101,6 +101,7 @@ exports.user_logout_get = asyncHandler(async (req, res, next) => {
     });
   });
 });
+
 exports.user_profile_get = asyncHandler(async (req, res, next) => {
   if (!req.user) {
     return res.redirect("/log-in");

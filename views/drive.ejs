@@ -1,32 +1,32 @@
 <div id="drive" class="flex justify-center flex-wrap flex-row gap-10">
   <div id="drives" class="flex justify-center flex-wrap flex-row gap-10">
-      <div id="drive-left-panel" class="flex flex-col w-30 gap-4 flex-wrap ">
+    <div id="drive-left-panel" class="flex flex-col w-30 gap-4 flex-wrap ">
 
-        <a href="/drive/folders/new-folder" id="new-folder-link">
-          <div class="flex items-end gap-2">
-            <img src="/images/icons8-folder-50.png" class="w-7" alt="Folder">
-            <p class="text-blue-600 hover:underline underline-offset-4 decoration-2 hover:underline decoration-violet-500">
-              New folder
-            </p>
-          </div>
-        </a>
+      <a href="/drive/folders/new-folder" id="new-folder-link">
+        <div class="flex items-end gap-2">
+          <img src="/images/icons8-folder-50.png" class="w-7" alt="Folder">
+          <p class="text-blue-600 hover:underline underline-offset-4 decoration-2 hover:underline decoration-violet-500">
+            New folder
+          </p>
+        </div>
+      </a>
 
-        <a href="/drive/folders/files/new-file" id="new-file-link">
-          <div class="flex items-end gap-2">
-            <img src="/images/icons8-file-50.png" class="w-7" alt="File">
-            <p class="text-blue-600 hover:underline underline-offset-4 decoration-2 hover:underline decoration-violet-500">
-              New file
-            </p>
-          </div>
-        </a>
+      <a href="/drive/folders/files/new-file" id="new-file-link">
+        <div class="flex items-end gap-2">
+          <img src="/images/icons8-file-50.png" class="w-7" alt="File">
+          <p class="text-blue-600 hover:underline underline-offset-4 decoration-2 hover:underline decoration-violet-500">
+            New file
+          </p>
+        </div>
+      </a>
     </div>
 
 
     <div id="drive-right-panel" class="flex flex-col w-96 flex-wrap ">
       <% if (action === 'new-folder') { %>
-        <%- include('new-folder-form') %>
+        <%- include('new-folder-form', { parentFolderId: parentFolderId }) %>
       <% } else if (action === 'new-file') { %>
-        <%- include('new-file-form') %>
+        <%- include('new-file-form', { parentFolderId: parentFolderId }) %>
       <% } else if (action === 'file-detail' && fileDetail) { %>
         <%- include('file-detail', { file: fileDetail }) %>
       <% } else if (action === 'folder-detail' && folderDetail) { %>
