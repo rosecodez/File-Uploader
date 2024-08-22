@@ -38,9 +38,11 @@
 
   </div>
 
-  <div id="button">
-    <button id="sort" data-sort="name" >Sort ascending</button>
-  </div>
+  <% if (action !== 'file-detail') { %>
+    <div id="button">
+      <button id="sort" data-sort="name">Sort ascending</button>
+    </div>
+  <% } %>
 
 </div>
 
@@ -58,7 +60,6 @@
   let isAscending = true; 
 
     document.getElementById('sort').addEventListener('click', function() {
-        // Select all items
         let items = document.querySelectorAll('#drive-right-panel .item');
 
         let itemsArray = Array.from(items);
@@ -68,13 +69,11 @@
             return isAscending ? comparison : -comparison;
         });
 
-        let parent = document.getElementById('drive-right-panel');
+        let parent = document.getElementById('drive-content-ul');
         itemsArray.forEach(item => parent.appendChild(item));
         itemsArray.forEach(item => item.style.listStyleType = 'none');
-
         isAscending = !isAscending;
         document.getElementById('sort').textContent = isAscending ? 'Sort ascending' : 'Sort descending';
     });
-    
 </script>
   
