@@ -37,13 +37,20 @@
     </div>
 
   </div>
-
-  <% if (action !== 'file-detail') { %>
+  
+  <% if (
+        (action !== 'file-detail') && 
+        (action !== 'folder-detail' || 
+         (folderDetail && folderDetail.files && 
+         folderDetail.folders && 
+          (folderDetail.files.length > 0 || 
+          folderDetail.folders.length > 0)))
+      ) { %>
     <div id="button">
       <button id="sort" data-sort="name">Sort ascending</button>
     </div>
   <% } %>
-
+    
 </div>
 
 <script>
