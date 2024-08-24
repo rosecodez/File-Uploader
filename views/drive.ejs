@@ -2,7 +2,7 @@
   <div id="drives" class="flex justify-center flex-wrap flex-row gap-10">
     <div id="drive-left-panel" class="flex flex-col w-30 gap-4 flex-wrap ">
 
-      <a href="/drive/folders/new-folder" id="new-folder-link">
+      <a href="<%= action === 'folder-detail' ? `/drive/folders/${folderDetail.id}/new-folder` : '/drive/folders/new-folder' %>" id="new-folder-link">
         <div class="flex items-end gap-2">
           <img src="/images/icons8-folder-50.png" class="w-7" alt="Folder">
           <p class="text-blue-600 hover:underline underline-offset-4 decoration-2 hover:underline decoration-violet-500">
@@ -11,7 +11,7 @@
         </div>
       </a>
 
-      <a href="/drive/folders/files/new-file" id="new-file-link">
+      <a href="<%= action === 'folder-detail' ? `/drive/folders/${folderDetail.id}/files/new-file` : '/drive/folders/files/new-file' %>" id="new-file-link">
         <div class="flex items-end gap-2">
           <img src="/images/icons8-file-50.png" class="w-7" alt="File">
           <p class="text-blue-600 hover:underline underline-offset-4 decoration-2 hover:underline decoration-violet-500">
@@ -20,7 +20,6 @@
         </div>
       </a>
     </div>
-
 
     <div id="drive-right-panel" class="flex flex-col w-96 flex-wrap ">
       <% if (action === 'new-folder') { %>
@@ -35,9 +34,8 @@
         <%- include('drive-content', { files: files, folders: folders }) %>
       <% } %>
     </div>
-
   </div>
-  
+
   <% if (
         (action !== 'file-detail') && 
         (action !== 'folder-detail' || 
@@ -50,7 +48,6 @@
       <button id="sort" data-sort="name">Sort ascending</button>
     </div>
   <% } %>
-    
 </div>
 
 <script>
@@ -66,21 +63,21 @@
 
   let isAscending = true; 
 
-    document.getElementById('sort').addEventListener('click', function() {
-        let items = document.querySelectorAll('#drive-right-panel .item');
+  document.getElementById('sort').addEventListener('click', function() {
+    let items = document.querySelectorAll('#drive-right-panel .item');
 
-        let itemsArray = Array.from(items);
-      
-        itemsArray.sort((a, b) => {
-            let comparison = a.textContent.trim().localeCompare(b.textContent.trim());
-            return isAscending ? comparison : -comparison;
-        });
+    let itemsArray = Array.from(items);
 
-        let parent = document.getElementById('drive-content-ul');
-        itemsArray.forEach(item => parent.appendChild(item));
-        itemsArray.forEach(item => item.style.listStyleType = 'none');
-        isAscending = !isAscending;
-        document.getElementById('sort').textContent = isAscending ? 'Sort ascending' : 'Sort descending';
+    itemsArray.sort((a, b) => {
+        let comparison = a.textContent.trim().localeCompare(b.textContent.trim());
+        return isAscending ? comparison : -comparison;
     });
+
+    let parent = document.getElementById('drive-content-ul');
+    itemsArray.forEach(item => parent.appendChild(item));
+    itemsArray.forEach(item => item.style.listStyleType = 'none');
+    isAscending = !isAscending;
+    document.getElementById('sort').textContent = isAscending ? 'Sort ascending' : 'Sort descending';
+  });
 </script>
   
