@@ -5,24 +5,54 @@
       </a>
   </div>
   <div class="flex flex-col gap-2">
-      <div id="folders-top-side" class="flex flex-row gap-2 items-center">
-          <img src="/images/icons8-folder-50.png" class="w-7 self-start" alt="File"/>
-          <span id="folder-name-<%= folder.id %>">
-              <div class="text-black-600 decoration-2 decoration-violet-500">
-                  <%= folder.name %>
-              </div>
-          </span>
-          <form id="folder-form-<%= folder.id %>" class="hidden" action="/drive/folders/<%= folder.id %>/rename" method="POST">
-              <input type="text" name="name" class="border border-gray-300 rounded px-2 py-1" value="<%= folder.name %>">
-              <button type="submit" class="px-2 py-1 bg-black-500 text-white rounded">Save</button>
-              <button type="button" onclick="cancelEdit('<%= folder.id %>', 'folder')" class="px-2 py-1 bg-gray-300 text-black rounded">Cancel</button>
-          </form>
-      </div>
+    <div id="folders-top-side" class="flex flex-row gap-2 items-center">
 
-      <div id="folders-bottom-side" class="flex gap-4 items-center">
-          <button class="text-sm" onclick="editItemName('<%= folder.id %>', 'folder')">Rename</button>
-          <button class="text-sm" onclick="showDeleteModal('folder', '<%= folder.id %>', '<%= folder.name %>')">Delete</button>
-      </div>
+        <img src="/images/icons8-folder-50.png" class="w-7 self-start" alt="File"/>
+        <span id="folder-name-<%= folder.id %>">
+            <div class="text-black-600 decoration-2 decoration-violet-500">
+                <%= folder.name %>
+            </div>
+        </span>
+
+        <form id="folder-form-<%= folder.id %>" class="hidden" action="/drive/folders/<%= folder.id %>/rename" method="POST">
+            <input type="text" name="name" class="border border-gray-300 rounded px-2 py-1" value="<%= folder.name %>">
+            <button type="submit" class="px-2 py-1 bg-black-500 text-white rounded">Save</button>
+            <button type="button" onclick="cancelEdit('<%= folder.id %>', 'folder')" class="px-2 py-1 bg-gray-300 text-black rounded">Cancel</button>
+        </form>
+    </div>
+    <div id="folders-bottom-side" class="flex gap-4 items-center">
+        <button class="text-sm" onclick="editItemName('<%= folder.id %>', 'folder')">Rename</button>
+        <button class="text-sm" onclick="showDeleteModal('folder', '<%= folder.id %>', '<%= folder.name %>')">Delete</button>
+    </div>
+    <div id="children">
+        <div class="subfolders">
+            <% if (subfolders && subfolders.length > 0) { %>
+                <ul>
+                <% subfolders.forEach(subfolder => { %>
+                    <li>
+                    <a href="/drive/folders/<%= subfolder.id %>/folder-detail"><%= subfolder.name %></a>
+                    </li>
+                <% }) %>
+                </ul>
+            <% } else { %>
+                <p>No subfolders</p>
+            <% } %>
+        </div>
+
+        <div class="files">
+            <% if (files && files.length > 0) { %>
+                <ul>
+                <% files.forEach(file => { %>
+                    <li>
+                    <a href="/drive/files/<%= file.id %>/file-detail"><%= file.name %></a>
+                    </li>
+                <% }) %>
+                </ul>
+            <% } else { %>
+                <p>No files</p>
+            <% } %>
+        </div>
+    </div>
   </div>
 
 </li>

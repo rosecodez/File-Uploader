@@ -129,8 +129,11 @@ exports.folder_detail_get = asyncHandler(async (req, res, next) => {
     }
 
     res.render("drive", {
-      folderDetail,
+      folderDetail: folderDetail,
       action: "folder-detail",
+      parentFolderId: folderDetail.parentId,
+      files: folderDetail.files,
+      subfolders: folderDetail.children,
       parentFolderId: folderDetail.parentId,
     });
   } catch (error) {
