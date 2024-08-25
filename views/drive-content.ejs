@@ -20,11 +20,6 @@
                 <button class="text-sm" onclick="showDeleteModal('folder', '<%= folder.id %>', '<%= folder.name %>')">Delete</button>
             </div>
 
-            <% if (folder.subfolders && folder.subfolders.length > 0) { %>
-                <ul class="pl-6">
-                    <%- include('drive-content', { folders: folder.subfolders, files: [] }) %>
-                </ul>
-            <% } %>
         </li>
     <% }) %>
 

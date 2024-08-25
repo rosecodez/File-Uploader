@@ -2,7 +2,11 @@ const asyncHandler = require("express-async-handler");
 const prisma = require("../prisma/prisma");
 
 exports.new_file_get = asyncHandler(async (req, res, next) => {
-  res.render("new-file-form");
+  const folderId = req.params.folderId
+    ? parseInt(req.params.folderId, 10)
+    : null;
+
+  res.render("new-file-form", { folderId });
 });
 
 exports.new_file_post = asyncHandler(async (req, res, next) => {
@@ -45,7 +49,7 @@ exports.file_delete_get = asyncHandler(async (req, res, next) => {
     res.status(500).json({ error: "Failed to retrieve file" });
   }
 });
-// You might want to pass empty arrays if not used
+
 exports.file_delete_post = asyncHandler(async (req, res, next) => {
   const fileId = parseInt(req.params.id);
 

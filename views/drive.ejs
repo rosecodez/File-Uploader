@@ -1,9 +1,10 @@
 <div id="drive" class="flex justify-center flex-wrap flex-row gap-10">
   <div id="drives" class="flex justify-center flex-wrap flex-row gap-10">
 
-    <% if (action !== 'file-detail') { %>
+    <% if (action !== 'file-detail' && action !== 'folder-detail') { %>
+    
       <div id="drive-left-panel" class="flex flex-col w-30 gap-4 flex-wrap">
-        <a href="/drive?action=new-folder" id="new-folder-link">
+        <a href="/drive/folders/new-folder" id="new-folder-link">
           <div class="flex items-end gap-2">
             <img src="/images/icons8-folder-50.png" class="w-7" alt="Folder">
             <p class="text-blue-600 hover:underline underline-offset-4 decoration-2 hover:underline decoration-violet-500">
@@ -11,8 +12,8 @@
             </p>
           </div>
         </a>
-
-        <a href="/drive?action=new-file" id="new-file-link">
+        
+        <a href="/drive/files/new-file" id="new-file-link">
           <div class="flex items-end gap-2">
             <img src="/images/icons8-file-50.png" class="w-7" alt="File">
             <p class="text-blue-600 hover:underline underline-offset-4 decoration-2 hover:underline decoration-violet-500">
@@ -20,9 +21,11 @@
             </p>
           </div>
         </a>
-      </div>
-    <% } %>
 
+      </div>
+
+    <% } %>
+      
     <div id="drive-right-panel" class="flex flex-col w-96 flex-wrap">
       <% if (action === 'new-folder') { %>
         <%- include('new-folder-form', { parentFolderId: parentFolderId }) %>
@@ -51,28 +54,10 @@
     </div>
   <% } %>
   
-  <% if (action === 'file-detail') { %>
-    <style>
-      #drive-left-panel {
-        display: none;
-      }
-    </style>
-  <% } %>
 </div>
 
 <script>
-  const parentFolderId = '<%= parentFolderId %>';
-  document.getElementById('new-folder-link').addEventListener('click', function(event) {
-    event.preventDefault();
-    const parentFolderId = '<%= parentFolderId %>';
-    document.getElementById('drive-right-panel').innerHTML = `<%- include('new-folder-form', { parentFolderId: parentFolderId }) %>`;
-  });
-
-  document.getElementById('new-file-link').addEventListener('click', function(event) {
-    event.preventDefault();
-    const parentFolderId = '<%= parentFolderId %>';
-    document.getElementById('drive-right-panel').innerHTML = `<%- include('new-file-form', { parentFolderId: parentFolderId }) %>`;
-  });
+  
 
   let isAscending = true;
 
