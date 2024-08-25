@@ -45,7 +45,7 @@ exports.file_delete_get = asyncHandler(async (req, res, next) => {
     res.status(500).json({ error: "Failed to retrieve file" });
   }
 });
-
+// You might want to pass empty arrays if not used
 exports.file_delete_post = asyncHandler(async (req, res, next) => {
   const fileId = parseInt(req.params.id);
 
@@ -86,12 +86,17 @@ exports.file_detail_get = asyncHandler(async (req, res, next) => {
     });
 
     if (!file) {
-      return res.status(404).render("404", { message: "Folder not found" });
+      return res.status(404).render("404", { message: "File not found" });
     }
+
+    const parentFolderId = file.folderId || null;
 
     res.render("drive", {
       action: "file-detail",
       fileDetail: file,
+      parentFolderId,
+      files: [],
+      rootFolders: [],
     });
   } catch (error) {
     console.error("Failed to retrieve file details:", error);

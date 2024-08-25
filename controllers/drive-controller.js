@@ -10,10 +10,6 @@ exports.drive_get = asyncHandler(async (req, res, next) => {
   console.log("Extracted parentFolderId from URL params:", parentFolderId);
 
   try {
-    if (action === "new-folder" || action === "new-file") {
-      return res.render("drive", { action, parentFolderId });
-    }
-
     const userId = req.session.user?.id;
     if (!userId) {
       console.error("User ID not found in session");
@@ -23,23 +19,40 @@ exports.drive_get = asyncHandler(async (req, res, next) => {
     const rootFolders = await prisma.folder.findMany({
       where: {
         userId: userId,
-        parentFolderId: null,
+        parentId: null,
       },
       include: {
-        subfolders: true,
+        children: true,
         files: true,
       },
     });
+
     const files = await prisma.file.findMany({
       where: { userId: userId, folderId: null },
     });
 
-    res.render("drive", {
-      rootFolders,
-      files,
-      action: "view",
-      parentFolderId,
-    });
+    if (action === "new-folder") {
+      return res.render("drive", {
+        action: "new-folder",
+        parentFolderId,
+        rootFolders,
+        files,
+      });
+    } else if (action === "new-file") {
+      return res.render("drive", {
+        action: "new-file",
+        parentFolderId,
+        rootFolders,
+        files,
+      });
+    } else {
+      return res.render("drive", {
+        action: "view",
+        rootFolders,
+        files,
+        parentFolderId,
+      });
+    }
   } catch (error) {
     console.error("Error in drive_get:", error.message);
     res.status(500).send("Server Error: " + error.message);
