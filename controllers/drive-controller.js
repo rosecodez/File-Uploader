@@ -17,16 +17,23 @@ exports.drive_get = asyncHandler(async (req, res, next) => {
       return res.status(401).redirect("/log-in");
     }
 
-    const files = await prisma.file.findMany({
-      where: { userId: userId },
+    const rootFolders = await prisma.folder.findMany({
+      where: {
+        userId: userId,
+        parentFolderId: null,
+      },
+      include: {
+        subfolders: true,
+        files: true,
+      },
     });
-    const folders = await prisma.folder.findMany({
-      where: { userId: userId },
+    const files = await prisma.file.findMany({
+      where: { userId: userId, folderId: null },
     });
 
     res.render("drive", {
+      rootFolders,
       files,
-      folders,
       action: "view",
     });
   } catch (error) {

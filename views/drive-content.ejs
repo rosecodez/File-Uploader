@@ -1,6 +1,6 @@
 <ul id="drive-content-ul" class="flex flex-col gap-4">
     <% folders.forEach(folder => { %>
-        <li class="item" class="flex flex-row gap-2 items-end justify-between">
+        <li class="item flex flex-row gap-2 items-end justify-between">
             <div id="folders-left-side" class="flex flex-row gap-2 items-center">
                 <img src="/images/icons8-folder-50.png" class="w-7 self-start" alt="Folder">
                 <span id="folder-name-<%= folder.id %>">
@@ -19,11 +19,17 @@
                 <button class="text-sm" onclick="editItemName('<%= folder.id %>', 'folder')">Rename</button>
                 <button class="text-sm" onclick="showDeleteModal('folder', '<%= folder.id %>', '<%= folder.name %>')">Delete</button>
             </div>
+
+            <% if (folder.subfolders && folder.subfolders.length > 0) { %>
+                <ul class="pl-6">
+                    <%- include('drive-content', { folders: folder.subfolders, files: [] }) %>
+                </ul>
+            <% } %>
         </li>
     <% }) %>
 
     <% files.forEach(file => { %>
-        <li class="item" flex flex-row gap-2 items-end justify-between">
+        <li class="item flex flex-row gap-2 items-end justify-between">
             <div id="files-left-side" class="flex flex-row gap-2 items-center">
                 <img src="/images/icons8-file-50.png" class="w-7 self-start" alt="File"/>
                 <span id="file-name-<%= file.id %>">
