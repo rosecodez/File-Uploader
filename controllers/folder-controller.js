@@ -7,7 +7,7 @@ exports.new_folder_get = asyncHandler(async (req, res, next) => {
 
 exports.new_folder_post = asyncHandler(async (req, res, next) => {
   try {
-    const { name } = req.body;
+    const { name, parentId } = req.body;
     const userId = req.user.id;
 
     if (!userId) {
@@ -17,6 +17,7 @@ exports.new_folder_post = asyncHandler(async (req, res, next) => {
     await prisma.folder.create({
       data: {
         name,
+        parentId,
         user: {
           connect: { id: userId },
         },
@@ -98,6 +99,10 @@ exports.folder_detail_get = asyncHandler(async (req, res, next) => {
     const folderId = parseInt(req.params.id);
     const folder = await prisma.folder.findUnique({
       where: { id: folderId },
+      include: {
+        children: true,
+        files: true,
+      },
     });
 
     if (!folder) {

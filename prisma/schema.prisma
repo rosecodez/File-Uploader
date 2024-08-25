@@ -26,16 +26,16 @@ model Session {
 }
 
 model Folder {
-  id             Int      @id @default(autoincrement())
-  name           String
-  user           User     @relation(fields: [userId], references: [id])
-  userId         String
-  files          File[]
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
-  parentFolderId Int?
-  parentFolder   Folder?  @relation("Subfolders", fields: [parentFolderId], references: [id])
-  subfolders     Folder[] @relation("Subfolders")
+  id        Int      @id @default(autoincrement())
+  name      String
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  parentId  Int?
+  parent    Folder?  @relation("FolderToParent", fields: [parentId], references: [id])
+  children  Folder[] @relation("FolderToParent")
+  files     File[]
 }
 
 model File {
