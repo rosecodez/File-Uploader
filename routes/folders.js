@@ -22,7 +22,4 @@ router.post("/:id/rename", folderController.folder_rename_post);
 // folder detail
 router.get("/:id/folder-detail", folderController.folder_detail_get);
 
-// root detail
-router.get("/:id/folder-detail-root", folderController.folder_detail_get_root);
-
 module.exports = router;

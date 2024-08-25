@@ -31,8 +31,8 @@
         <%- include('new-file-form', { parentFolderId: parentFolderId }) %>
       <% } else if (action === 'folder-detail' && folderDetail) { %>
         <%- include('folder-detail', { folder: folderDetail }) %>
-      <% } else if (action === 'folder-detail-root' && folderDetail) { %>
-        <%- include('folder-detail-root', { folder: folderDetail }) %>
+      <% } else if (action === 'folder-detail' && folderDetail) { %>
+        <%- include('folder-detail', { folder: folderDetail }) %>
       <% } else { %>
         <%- include('drive-content', { files: files, folders: rootFolders }) %>
       <% } %>
@@ -64,14 +64,12 @@
   document.getElementById('new-folder-link').addEventListener('click', function(event) {
     event.preventDefault();
     const parentFolderId = '<%= parentFolderId %>';
-    // Update the drive-right-panel with new folder form
     document.getElementById('drive-right-panel').innerHTML = `<%- include('new-folder-form', { parentFolderId: parentFolderId }) %>`;
   });
 
   document.getElementById('new-file-link').addEventListener('click', function(event) {
     event.preventDefault();
     const parentFolderId = '<%= parentFolderId %>';
-    // Update the drive-right-panel with new file form
     document.getElementById('drive-right-panel').innerHTML = `<%- include('new-file-form', { parentFolderId: parentFolderId }) %>`;
   });
 
@@ -83,8 +81,6 @@
     let itemsArray = Array.from(items);
   
     itemsArray.sort((a, b) => {
-      let comparison = a.textContent.trim().localeCompare(b.textContent.trim());
-      return isAscending ? comparison : -comparison;
       let comparison = a.textContent.trim().localeCompare(b.textContent.trim());
       return isAscending ? comparison : -comparison;
     });

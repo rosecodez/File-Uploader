@@ -138,30 +138,3 @@ exports.folder_detail_get = asyncHandler(async (req, res, next) => {
     res.status(500).send("Server Error: " + error.message);
   }
 });
-
-exports.folder_detail_get_root = asyncHandler(async (req, res, next) => {
-  const folderId = parseInt(req.params.id, 10);
-
-  try {
-    const folderDetail = await prisma.folder.findUnique({
-      where: { id: folderId },
-      include: {
-        files: true,
-        folders: true,
-      },
-    });
-
-    if (!folderDetail) {
-      return res.status(404).send("Folder not found");
-    }
-
-    res.render("drive", {
-      folderDetail,
-      action: "folder-detail-root",
-      parentFolderId: folderId,
-    });
-  } catch (error) {
-    console.error("Error fetching folder details:", error.message);
-    res.status(500).send("Server Error: " + error.message);
-  }
-});
