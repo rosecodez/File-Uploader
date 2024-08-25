@@ -24,16 +24,17 @@
     <% } %>
 
     <div id="drive-right-panel" class="flex flex-col w-96 flex-wrap">
+    <div id="drive-right-panel" class="flex flex-col w-96 flex-wrap">
       <% if (action === 'new-folder') { %>
         <%- include('new-folder-form', { parentFolderId: parentFolderId }) %>
       <% } else if (action === 'new-file') { %>
         <%- include('new-file-form', { parentFolderId: parentFolderId }) %>
-      <% } else if (action === 'file-detail' && fileDetail) { %>
-        <%- include('file-detail', { file: fileDetail }) %>
       <% } else if (action === 'folder-detail' && folderDetail) { %>
         <%- include('folder-detail', { folder: folderDetail }) %>
+      <% } else if (action === 'folder-detail-root' && folderDetail) { %>
+        <%- include('folder-detail-root', { folder: folderDetail }) %>
       <% } else { %>
-        <%- include('drive-content', { files: files, folders: folders }) %>
+        <%- include('drive-content', { files: files, folders: rootFolders }) %>
       <% } %>
     </div>
   </div>
@@ -50,17 +51,28 @@
       <button id="sort" data-sort="name">Sort ascending</button>
     </div>
   <% } %>
+  <% if (action === 'file-detail') { %>
+    <style>
+      #drive-left-panel {
+        display: none;
+      }
+    </style>
+  <% } %>
 </div>
-
 <script>
+  const parentFolderId = '<%= parentFolderId %>';
   document.getElementById('new-folder-link').addEventListener('click', function(event) {
     event.preventDefault();
-    document.getElementById('drive-right-panel').innerHTML = `<%- include('new-folder-form') %>`;
+    const parentFolderId = '<%= parentFolderId %>';
+    // Update the drive-right-panel with new folder form
+    document.getElementById('drive-right-panel').innerHTML = `<%- include('new-folder-form', { parentFolderId: parentFolderId }) %>`;
   });
 
   document.getElementById('new-file-link').addEventListener('click', function(event) {
     event.preventDefault();
-    document.getElementById('drive-right-panel').innerHTML = `<%- include('new-file-form') %>`;
+    const parentFolderId = '<%= parentFolderId %>';
+    // Update the drive-right-panel with new file form
+    document.getElementById('drive-right-panel').innerHTML = `<%- include('new-file-form', { parentFolderId: parentFolderId }) %>`;
   });
 
   let isAscending = true;
@@ -69,8 +81,10 @@
     let items = document.querySelectorAll('#drive-right-panel .item');
 
     let itemsArray = Array.from(items);
-
+  
     itemsArray.sort((a, b) => {
+      let comparison = a.textContent.trim().localeCompare(b.textContent.trim());
+      return isAscending ? comparison : -comparison;
       let comparison = a.textContent.trim().localeCompare(b.textContent.trim());
       return isAscending ? comparison : -comparison;
     });

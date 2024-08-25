@@ -7,16 +7,34 @@ exports.new_folder_get = asyncHandler(async (req, res, next) => {
 
 exports.new_folder_post = asyncHandler(async (req, res, next) => {
   try {
-    const { name } = req.body;
+    const { name, parentId } = req.body;
     const userId = req.user.id;
 
     if (!userId) {
       return res.status(401).json({ error: "User not authenticated" });
     }
 
+    let parentFolder = null;
+    if (parentId) {
+      const parsedParentId = parseInt(parentId, 10);
+
+      if (isNaN(parsedParentId)) {
+        return res.status(400).json({ error: "Invalid parent folder ID" });
+      }
+
+      parentFolder = await prisma.folder.findUnique({
+        where: { id: parsedParentId },
+      });
+
+      if (!parentFolder) {
+        return res.status(404).json({ error: "Parent folder not found" });
+      }
+    }
+
     await prisma.folder.create({
       data: {
         name,
+        parent: parentFolder ? { connect: { id: parentFolder.id } } : undefined,
         user: {
           connect: { id: userId },
         },
@@ -25,6 +43,7 @@ exports.new_folder_post = asyncHandler(async (req, res, next) => {
 
     res.redirect("/drive");
   } catch (error) {
+    console.error("Error creating folder:", error);
     res.status(500).json({ error: "Failed to create folder" });
   }
 });
@@ -94,22 +113,55 @@ exports.folder_rename_post = asyncHandler(async (req, res, next) => {
 });
 
 exports.folder_detail_get = asyncHandler(async (req, res, next) => {
+  const folderId = parseInt(req.params.id, 10);
+
   try {
-    const folderId = parseInt(req.params.id);
-    const folder = await prisma.folder.findUnique({
+    const folderDetail = await prisma.folder.findUnique({
       where: { id: folderId },
+      include: {
+        files: true,
+        children: true,
+      },
     });
 
-    if (!folder) {
-      return res.status(404).render("404", { message: "Folder not found" });
+    if (!folderDetail) {
+      return res.status(404).send("Folder not found");
     }
 
     res.render("drive", {
+      folderDetail,
       action: "folder-detail",
-      folderDetail: folder,
+      parentFolderId: folderDetail.parentId,
     });
   } catch (error) {
-    console.error("Failed to retrieve folder details:", error);
-    res.status(500).json({ error: "Failed to retrieve folder details" });
+    console.error("Error fetching folder details:", error.message);
+    res.status(500).send("Server Error: " + error.message);
+  }
+});
+
+exports.folder_detail_get_root = asyncHandler(async (req, res, next) => {
+  const folderId = parseInt(req.params.id, 10);
+
+  try {
+    const folderDetail = await prisma.folder.findUnique({
+      where: { id: folderId },
+      include: {
+        files: true,
+        folders: true,
+      },
+    });
+
+    if (!folderDetail) {
+      return res.status(404).send("Folder not found");
+    }
+
+    res.render("drive", {
+      folderDetail,
+      action: "folder-detail-root",
+      parentFolderId: folderId,
+    });
+  } catch (error) {
+    console.error("Error fetching folder details:", error.message);
+    res.status(500).send("Server Error: " + error.message);
   }
 });
