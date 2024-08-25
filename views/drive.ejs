@@ -2,7 +2,8 @@
   <div id="drives" class="flex justify-center flex-wrap flex-row gap-10">
     <div id="drive-left-panel" class="flex flex-col w-30 gap-4 flex-wrap ">
 
-      <a href="<%= action === 'folder-detail' ? `/drive/folders/${folderDetail.id}/new-folder` : '/drive/folders/new-folder' %>" id="new-folder-link">
+      <a href="<%= action === 'folder-detail' ? `/drive/folders/${folderDetail.id}/new-folder` :
+       '/drive/folders/new-folder' %>" id="new-folder-link">
         <div class="flex items-end gap-2">
           <img src="/images/icons8-folder-50.png" class="w-7" alt="Folder">
           <p class="text-blue-600 hover:underline underline-offset-4 decoration-2 hover:underline decoration-violet-500">
@@ -11,7 +12,8 @@
         </div>
       </a>
 
-      <a href="<%= action === 'folder-detail' ? `/drive/folders/${folderDetail.id}/files/new-file` : '/drive/folders/files/new-file' %>" id="new-file-link">
+      <a href="<%= action === 'folder-detail' ? `/drive/folders/${folderDetail.id}/files/new-file` :
+       '/drive/folders/files/new-file' %>" id="new-file-link">
         <div class="flex items-end gap-2">
           <img src="/images/icons8-file-50.png" class="w-7" alt="File">
           <p class="text-blue-600 hover:underline underline-offset-4 decoration-2 hover:underline decoration-violet-500">
@@ -31,7 +33,7 @@
       <% } else if (action === 'folder-detail' && folderDetail) { %>
         <%- include('folder-detail', { folder: folderDetail }) %>
       <% } else { %>
-        <%- include('drive-content', { files: files, folders: folders }) %>
+        <%- include('drive-content', { files: files, folders: rootFolders }) %>
       <% } %>
     </div>
   </div>
@@ -47,6 +49,13 @@
     <div id="button">
       <button id="sort" data-sort="name">Sort ascending</button>
     </div>
+  <% } %>
+  <% if (action === 'file-detail') { %>
+    <style>
+      #drive-left-panel {
+        display: none;
+      }
+    </style>
   <% } %>
 </div>
 
