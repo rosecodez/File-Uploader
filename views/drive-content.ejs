@@ -32,7 +32,7 @@
                         <%= file.name %>
                     </a>
                 </span>
-                <form id="file-form-<%= file.id %>" class="hidden" action="/drive/files/<%= file.id %>/rename" method="POST">
+                <form id="file-form-<%= file.id %>" action="/drive/files/<%= file.id %>/rename" method="POST">
                     <input type="text" name="name" class="border border-gray-300 rounded px-2 py-1" value="<%= file.name %>">
                     <button type="submit" class="px-2 py-1 bg-blue-500 text-white rounded">Save</button>
                     <button type="button" onclick="cancelEdit('<%= file.id %>', 'file')" class="px-2 py-1 bg-gray-300 text-black rounded">Cancel</button>

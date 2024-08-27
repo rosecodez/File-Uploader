@@ -51,36 +51,35 @@
     </div>
     
     <div id="children">
-        <div class="subfolders">
+        <div id="subfolders">
             <% if (subfolders && subfolders.length > 0) { %>
-                <ul class="text-blue-600 hover:underline underline-offset-4 decoration-2 hover:underline decoration-violet-500">
+                <ul>
                 <% subfolders.forEach(subfolder => { %>
-                    <li>
+                    <li class="item">
                         <img src="/images/icons8-folder-50.png" class="w-7 self-start" alt="Folder"/>
-                        <a href="/drive/folders/<%= subfolder.id %>/folder-detail"><%= subfolder.name %></a>
+                        <a class="text-blue-600 hover:underline underline-offset-4 decoration-2 hover:underline decoration-violet-500" href="/drive/folders/<%= subfolder.id %>/folder-detail"><%= subfolder.name %></a>
                     </li>
                 <% }) %>
                 </ul>
-            <% } else { %>
-                <p class="text-indigo-500 bold">No subfolders</p>
             <% } %>
         </div>
 
-        <div class="files">
+        <div id="files">
             <% if (files && files.length > 0) { %>
                 <ul>
                 <% files.forEach(file => { %>
-                    <li>
+                    <li class="item">
                         <img src="/images/icons8-file-50" class="w-7 self-start" alt="File"/>
                         <a href="/drive/files/<%= file.id %>/file-detail"><%= file.name %></a>
                     </li>
                 <% }) %>
                 </ul>
-            <% } else { %>
-                <p class="text-indigo-500 bold">No files</p>
             <% } %>
         </div>
     </div>
+    <div id="button">
+        <button id="sort" data-sort="name">Sort ascending</button>
+      </div>
   </div>
 
 </li>
@@ -108,9 +107,9 @@
 
         deleteForm.action = itemType === 'folder' ? `/drive/folders/${itemId}/delete` : `/drive/files/${itemId}/delete`;
 
-        deleteModal.classList.remove('hidden');
+        deleteModal.classList.remove('hidden');isAscending
     }
-
+    
     function hideDeleteModal() {
         const deleteModal = document.getElementById('deleteModal');
         deleteModal.classList.add('hidden');
@@ -132,5 +131,25 @@
     document.getElementById('show-new-file-form').addEventListener('click', function() {
         const form = document.getElementById('new-file-form');
         form.classList.toggle('hidden');
+    });
+
+    let isAscending = true;
+
+    document.getElementById('sort').addEventListener('click', function() {
+        let items = document.querySelectorAll('#children .item');
+        let itemsArray = Array.from(items);
+
+        itemsArray.sort((a, b) => {
+            let comparison = a.textContent.trim().localeCompare(b.textContent.trim());
+            return isAscending ? comparison : -comparison;
+        });
+
+        let parent = document.getElementById('children');
+        parent.innerHTML = '';
+        itemsArray.forEach(item => parent.appendChild(item));
+        itemsArray.forEach(item => item.style.listStyleType = 'none');
+
+        isAscending = !isAscending;
+        document.getElementById('sort').textContent = isAscending ? 'Sort ascending' : 'Sort descending';
     });
 </script>
