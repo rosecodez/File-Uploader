@@ -9,7 +9,6 @@ exports.new_file_post = asyncHandler(async (req, res, next) => {
   try {
     const { name, parentId } = req.body;
     const userId = req.user.id;
-
     await prisma.file.create({
       data: {
         name,
@@ -17,6 +16,9 @@ exports.new_file_post = asyncHandler(async (req, res, next) => {
           connect: { id: userId },
         },
         size: req.file.size,
+        mimetype: req.file.mimetype,
+        encoding: req.file.encoding,
+        path: req.file.path,
         folder: parentId
           ? { connect: { id: parseInt(parentId, 10) } }
           : undefined,
