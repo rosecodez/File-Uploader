@@ -16,12 +16,12 @@ exports.new_file_post = asyncHandler(async (req, res, next) => {
         user: {
           connect: { id: userId },
         },
+        size: req.file.size,
         folder: parentId
           ? { connect: { id: parseInt(parentId, 10) } }
           : undefined,
       },
     });
-
     res.redirect(
       parentId ? `/drive/folders/${parentId}/folder-detail` : "/drive"
     );

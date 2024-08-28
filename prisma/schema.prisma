@@ -47,4 +47,5 @@ model File {
   folderId  Int?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  size      Int
 }
