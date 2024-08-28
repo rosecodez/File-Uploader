@@ -6,11 +6,7 @@ const { folder } = require("../prisma/prisma");
 
 //new folder form
 router.get("/new-folder", folderController.new_folder_get);
-router.post(
-  "/new-folder",
-  upload.single("folder"),
-  folderController.new_folder_post
-);
+router.post("/new-folder", folderController.new_folder_post);
 
 // delete folder
 router.get("/:id/delete", folderController.folder_delete_get);
