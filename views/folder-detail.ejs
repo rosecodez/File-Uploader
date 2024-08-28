@@ -1,8 +1,8 @@
 <li class="flex flex-row gap-2">
   <div class="flex">
-      <a href="/drive">
-        <img src="/images/icons8-go-back-24.png" class="w-7 self-start" alt="Back">
-      </a>
+    <a href="/drive">
+    <img src="/images/icons8-go-back-24.png" class="w-7 self-start" alt="Back">
+    </a>
   </div>
 
   <div class="flex flex-col gap-2">
@@ -18,7 +18,7 @@
 
         <div id="folders-top-right" class="flex gap-3 items-center">
             <button class="text-sm" onclick="editItemName('<%= folder.id %>', 'folder')">Rename</button>
-<button class="text-sm" onclick="deleteFolder('<%= folder.id %>', '<%= folder.name %>', <%= subfolders.length > 0 || files.length > 0 %>)">Delete</button>
+            <button class="text-sm" onclick="deleteFolder('<%= folder.id %>', '<%= folder.name %>', <%= subfolders.length > 0 || files.length > 0 %>)">Delete</button>
         </div>
 
         <form id="folder-form-<%= folder.id %>" class="hidden" action="/drive/folders/<%= folder.id %>/rename" method="POST">
@@ -28,10 +28,6 @@
         </form>
     </div>
 
-
-    
-    
-    
     <button id="show-new-folder-form" class="w-[104px] px-2 py-1 bg-blue-500 text-white rounded">New folder</button>
     <div id="new-folder-form" class="hidden flex gap-4 items-center mt-4">
         <img src="/images/icons8-folder-50.png" class="w-7 " alt="Folder">
@@ -45,9 +41,13 @@
     <button id="show-new-file-form" class="w-[104px] px-2 py-1 bg-blue-500 text-white rounded">New file</button>
     <div id="new-file-form" class="hidden flex gap-4 items-center mt-4">
         <img src="/images/icons8-file-50.png" class="w-7 " alt="File">
-        <form action="/drive/files/new-file" method="POST" class="flex items-center gap-2">
+        <form action="/drive/files/new-file" enctype="multipart/form-data" method="POST" class="flex items-center gap-2">
+
             <input type="hidden" name="parentId" value="<%= folder.id %>">
             <input type="text" name="name" placeholder="New file name" class="border border-gray-300 rounded px-2 py-1" required>
+
+            <input class="mt-1 block w-[222px]" type="file" id="file" name="file" required/>
+
             <button type="submit" class="w-[130px] px-2 py-1 bg-blue-500 text-white rounded">Create File</button>
         </form>
     </div>
@@ -71,7 +71,7 @@
                 <ul>
                 <% files.forEach(file => { %>
                     <li class="item">
-                        <img src="/images/icons8-file-50" class="w-7 self-start" alt="File"/>
+                        <img src="/images/icons8-file-50.png" class="w-7 self-start" alt="File"/>
                         <a href="/drive/files/<%= file.id %>/file-detail"><%= file.name %></a>
                     </li>
                 <% }) %>

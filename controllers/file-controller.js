@@ -2,16 +2,12 @@ const asyncHandler = require("express-async-handler");
 const prisma = require("../prisma/prisma");
 
 exports.new_file_get = asyncHandler(async (req, res, next) => {
-  const folderId = req.params.folderId
-    ? parseInt(req.params.folderId, 10)
-    : null;
-
-  res.render("new-file-form", { folderId });
+  res.render("new-file-form");
 });
 
 exports.new_file_post = asyncHandler(async (req, res, next) => {
   try {
-    const { name } = req.body;
+    const { name, parentId } = req.body;
     const userId = req.user.id;
 
     await prisma.file.create({
@@ -20,10 +16,15 @@ exports.new_file_post = asyncHandler(async (req, res, next) => {
         user: {
           connect: { id: userId },
         },
+        folder: parentId
+          ? { connect: { id: parseInt(parentId, 10) } }
+          : undefined,
       },
     });
 
-    res.redirect("/drive");
+    res.redirect(
+      parentId ? `/drive/folders/${parentId}/folder-detail` : "/drive"
+    );
   } catch (error) {
     res.status(500).json({ error: "Failed to upload file" });
   }
