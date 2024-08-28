@@ -52,37 +52,36 @@
         </form>
     </div>
     
-    <div id="children">
-        <div id="subfolders">
-            <% if (subfolders && subfolders.length > 0) { %>
-                <ul>
-                <% subfolders.forEach(subfolder => { %>
-                    <li class="item">
-                        <img src="/images/icons8-folder-50.png" class="w-7 self-start" alt="Folder"/>
-                        <a class="text-blue-600 hover:underline underline-offset-4 decoration-2 hover:underline decoration-violet-500" href="/drive/folders/<%= subfolder.id %>/folder-detail"><%= subfolder.name %></a>
-                    </li>
-                <% }) %>
-                </ul>
-            <% } %>
-        </div>
+    <div id="children" class="flex flex-col">
+        <% if (subfolders && subfolders.length > 0) { %>
+            <ul class="item flex flex-col">
+            <% subfolders.forEach(subfolder => { %>
+                <li class="item flex flex-row pb-2 gap-2 items-center">
+                    <img src="/images/icons8-folder-50.png" class="w-7 self-start" alt="Folder"/>
+                    <a class="text-blue-600 hover:underline underline-offset-4 decoration-2 hover:underline decoration-violet-500" href="/drive/folders/<%= subfolder.id %>/folder-detail"><%= subfolder.name %></a>
+                </li>
+            <% }) %>
+            </ul>
+        <% } %>
 
-        <div id="files">
-            <% if (files && files.length > 0) { %>
-                <ul>
-                <% files.forEach(file => { %>
-                    <li class="item">
-                        <img src="/images/icons8-file-50.png" class="w-7 self-start" alt="File"/>
-                        <a href="/drive/files/<%= file.id %>/file-detail"><%= file.name %></a>
-                    </li>
-                <% }) %>
-                </ul>
-            <% } %>
-        </div>
+        <% if (files && files.length > 0) { %>
+            <ul class="item flex flex-col">
+            <% files.forEach(file => { %>
+                <li class="item flex flex-row pb-2 gap-2 items-center">
+                    <img src="/images/icons8-file-50.png" class="w-7 self-start" alt="File"/>
+                    <a class="text-blue-600 hover:underline underline-offset-4 decoration-2 hover:underline decoration-violet-500" href="/drive/files/<%= file.id %>/file-detail"><%= file.name %></a>
+                </li>
+            <% }) %>
+            </ul>
+        <% } %>
+        
     </div>
 
-    <div id="button">
-        <button id="sort" data-sort="name">Sort ascending</button>
-    </div>
+    <% if (files.length !== 0 || subfolders.length !== 0) { %>
+        <div id="button">
+            <button id="sort" data-sort="name">Sort ascending</button>
+        </div>
+    <% } %>
 
   </div>
 
