@@ -9,6 +9,10 @@ exports.new_file_post = asyncHandler(async (req, res, next) => {
   try {
     const { name, parentId } = req.body;
     const userId = req.user.id;
+    if (!req.file) {
+      return res.status(400).json({ error: "No file uploaded" });
+    }
+    console.log("Uploaded file details:", req.file);
     await prisma.file.create({
       data: {
         name,
@@ -19,6 +23,7 @@ exports.new_file_post = asyncHandler(async (req, res, next) => {
         mimetype: req.file.mimetype,
         encoding: req.file.encoding,
         path: req.file.path,
+        fileUrl: req.file.path,
         folder: parentId
           ? { connect: { id: parseInt(parentId, 10) } }
           : undefined,
@@ -28,6 +33,7 @@ exports.new_file_post = asyncHandler(async (req, res, next) => {
       parentId ? `/drive/folders/${parentId}/folder-detail` : "/drive"
     );
   } catch (error) {
+    console.error("Error during file upload to Prisma:", error);
     res.status(500).json({ error: "Failed to upload file" });
   }
 });

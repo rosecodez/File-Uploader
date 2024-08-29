@@ -29,7 +29,7 @@
         <div id="files-bottom-side" class="flex gap-4 items-center">
             <button class="text-sm" onclick="editItemName('<%= file.id %>', 'file')">Rename</button>
             <button class="text-sm" onclick="showDeleteModal('file', '<%= file.id %>', '<%= file.name %>')">Delete</button>
-            <a href="" class="text-sm">Download</a>
+            <a href="<%= file.path %>" class="text-sm">Download</a>
         </div>
     </div>
    

@@ -19,7 +19,7 @@
         <div id="folders-top-right" class="flex gap-3 items-center">
             <button class="text-sm" onclick="editItemName('<%= folder.id %>', 'folder')">Rename</button>
             <button class="text-sm" onclick="deleteFolder('<%= folder.id %>', '<%= folder.name %>', <%= subfolders.length > 0 || files.length > 0 %>)">Delete</button>
-            <a href="" class="text-sm">Download</a>
+
         </div>
 
         <form id="folder-form-<%= folder.id %>" class="hidden" action="/drive/folders/<%= folder.id %>/rename" method="POST">

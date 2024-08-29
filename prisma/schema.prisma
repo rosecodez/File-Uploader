@@ -51,4 +51,5 @@ model File {
   mimetype  String
   encoding  String
   path      String
+  fileUrl   String
 }
