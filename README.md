@@ -30,7 +30,35 @@ cd file-uploader
 2. Install dependencies
 
 ```bash
-npm install
+npm install express express-session passport passport-local prisma @prisma/client pg multer cloudinary multer-storage-cloudinary ejs express-ejs-layouts dotenv express-async-handler bcryptjs
+```
+
+3. Set up environment variables
+
+```bash
+DATABASE_URL="your_postgresql_connection_string"
+CLOUDINARY_CLOUD_NAME="your_cloud_name"
+CLOUDINARY_API_KEY="your_api_key"
+CLOUDINARY_API_SECRET="your_api_secret"
+SESSION_SECRET="your_session_secret"
+```
+
+4. Run database migrations
+
+```bash
+npx prisma migrate dev --name init
+```
+
+5. Start the application
+
+```bash
+npm start
+```
+
+6. Access the application
+
+```bash
+http://localhost:3000
 ```
 
 ## Technologies Used
