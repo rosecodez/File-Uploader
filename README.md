@@ -30,7 +30,7 @@ cd file-uploader
 2. Install dependencies
 
 ```bash
-npm install express express-session passport passport-local prisma @prisma/client pg multer cloudinary multer-storage-cloudinary ejs express-ejs-layouts dotenv express-async-handler bcryptjs
+npm install
 ```
 
 3. Set up environment variables
