@@ -1,27 +1,40 @@
 <div id="log-in-form" class="flex flex-col">
-    <h1 class="text-2xl pb-1 leading-normal ">Log in</h1>
-    <h6 class="pb-6">Don't have an account?
-        <a href="/sign-up" class="text-blue-600 hover:underline underline-offset-4 decoration-2 hover:underline decoration-violet-500">Sign up</a>
-    </h6>
+  <h1 class="text-2xl pb-1 leading-normal">Log in</h1>
+  <h6 class="pb-6">
+    Don't have an account?
+    <a
+      href="/sign-up"
+      class="text-blue-600 hover:underline underline-offset-4 decoration-2 hover:underline decoration-violet-500"
+      >Sign up</a
+    >
+  </h6>
 
-    <form method="POST" action="/log-in">
-        <div class="form-group">
-            <label for="username">Username</label>
-            <input class="mb-4 mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400
-            focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500
-            disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none
-            invalid:border-pink-500 invalid:text-pink-600
-            focus:invalid:border-pink-500 focus:invalid:ring-pink-500" type="text" id="username" placeholder="Enter your username" name="username">
-        </div>
-        <div class="form-group">
-            <label for="password">Password</label>
-            <input class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400
-            focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500
-            disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none
-            invalid:border-pink-500 invalid:text-pink-600
-            focus:invalid:border-pink-500 focus:invalid:ring-pink-500" type="password" id="password" placeholder="Enter your password" name="password">
-        </div>
-        <button class="mt-6 p-3 border-solid rounded-tl-lg bg-violet-500 hover:bg-violet-600 active:bg-violet-700 focus:outline-none focus:ring focus:ring-violet-300" type="submit">Log in</button>
-    </form>
-    
+  <form method="POST" action="/log-in">
+    <div class="form-group">
+      <label for="username">Username</label>
+      <input
+        class="mb-4 mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500"
+        type="text"
+        id="username"
+        placeholder="Enter your username"
+        name="username"
+      />
+    </div>
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input
+        class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500"
+        type="password"
+        id="password"
+        placeholder="Enter your password"
+        name="password"
+      />
+    </div>
+    <button
+      class="mt-6 p-3 border-solid rounded-tl-lg bg-violet-500 hover:bg-violet-600 active:bg-violet-700 focus:outline-none focus:ring focus:ring-violet-300"
+      type="submit"
+    >
+      Log in
+    </button>
+  </form>
 </div>
