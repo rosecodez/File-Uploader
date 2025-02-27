@@ -95,42 +95,42 @@
 </div>
 
 <script>
-  const parentFolderId = "<%= parentFolderId %>";
+  const parentFolderId = '<%= parentFolderId %>';
   function showDeleteModal(itemType, itemId, itemName) {
-    const deleteModal = document.getElementById("deleteModal");
-    const deleteMessage = document.getElementById("deleteMessage");
-    const deleteForm = document.getElementById("deleteForm");
+    const deleteModal = document.getElementById('deleteModal');
+    const deleteMessage = document.getElementById('deleteMessage');
+    const deleteForm = document.getElementById('deleteForm');
 
     deleteMessage.textContent = `Are you sure you want to delete "${itemName}"?`;
 
     deleteForm.action =
-      itemType === "folder"
+      itemType === 'folder'
         ? `/drive/folders/${itemId}/delete`
         : `/drive/files/${itemId}/delete`;
 
-    deleteModal.classList.remove("hidden");
+    deleteModal.classList.remove('hidden');
   }
 
   function hideDeleteModal() {
-    const deleteModal = document.getElementById("deleteModal");
-    deleteModal.classList.add("hidden");
+    const deleteModal = document.getElementById('deleteModal');
+    deleteModal.classList.add('hidden');
   }
 
   function editItemName(itemId, itemType) {
     document
       .getElementById(`${itemType}-name-${itemId}`)
-      .classList.add("hidden");
+      .classList.add('hidden');
     document
       .getElementById(`${itemType}-form-${itemId}`)
-      .classList.remove("hidden");
+      .classList.remove('hidden');
   }
 
   function cancelEdit(itemId, itemType) {
     document
       .getElementById(`${itemType}-name-${itemId}`)
-      .classList.remove("hidden");
+      .classList.remove('hidden');
     document
       .getElementById(`${itemType}-form-${itemId}`)
-      .classList.add("hidden");
+      .classList.add('hidden');
   }
 </script>

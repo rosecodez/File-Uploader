@@ -1,8 +1,8 @@
-const asyncHandler = require("express-async-handler");
-const prisma = require("../prisma/prisma");
+const asyncHandler = require('express-async-handler');
+const prisma = require('../prisma/prisma');
 
 exports.new_folder_get = asyncHandler(async (req, res, next) => {
-  res.render("new-folder-form");
+  res.render('new-folder-form');
 });
 
 exports.new_folder_post = asyncHandler(async (req, res, next) => {
@@ -11,7 +11,7 @@ exports.new_folder_post = asyncHandler(async (req, res, next) => {
     const userId = req.user.id;
 
     if (!userId) {
-      return res.status(401).json({ error: "User not authenticated" });
+      return res.status(401).json({ error: 'User not authenticated' });
     }
 
     let parentFolder = null;
@@ -19,7 +19,7 @@ exports.new_folder_post = asyncHandler(async (req, res, next) => {
       const parsedParentId = parseInt(parentId, 10);
 
       if (isNaN(parsedParentId)) {
-        return res.status(400).json({ error: "Invalid parent folder ID" });
+        return res.status(400).json({ error: 'Invalid parent folder ID' });
       }
 
       parentFolder = await prisma.folder.findUnique({
@@ -27,7 +27,7 @@ exports.new_folder_post = asyncHandler(async (req, res, next) => {
       });
 
       if (!parentFolder) {
-        return res.status(404).json({ error: "Parent folder not found" });
+        return res.status(404).json({ error: 'Parent folder not found' });
       }
     }
 
@@ -41,10 +41,10 @@ exports.new_folder_post = asyncHandler(async (req, res, next) => {
       },
     });
 
-    res.redirect("/drive");
+    res.redirect('/drive');
   } catch (error) {
-    console.error("Error creating folder:", error);
-    res.status(500).json({ error: "Failed to create folder" });
+    console.error('Error creating folder:', error);
+    res.status(500).json({ error: 'Failed to create folder' });
   }
 });
 
@@ -57,15 +57,15 @@ exports.folder_delete_get = asyncHandler(async (req, res, next) => {
     });
 
     if (!folder) {
-      const err = new Error("Folder not found");
+      const err = new Error('Folder not found');
       err.status = 404;
       return next(err);
     }
 
-    res.render("delete-folder-form", { folder });
+    res.render('delete-folder-form', { folder });
   } catch (error) {
-    console.error("Error finding folder:", error.message);
-    res.status(500).json({ error: "Failed to retrieve folder" });
+    console.error('Error finding folder:', error.message);
+    res.status(500).json({ error: 'Failed to retrieve folder' });
   }
 });
 
@@ -76,11 +76,11 @@ exports.folder_delete_post = asyncHandler(async (req, res, next) => {
     const userId = req.session.userId;
 
     if (!userId) {
-      return res.status(401).json({ error: "User not authenticated" });
+      return res.status(401).json({ error: 'User not authenticated' });
     }
 
     if (isNaN(folderId)) {
-      return res.status(400).json({ error: "Invalid folder ID" });
+      return res.status(400).json({ error: 'Invalid folder ID' });
     }
 
     await prisma.folder.delete({
@@ -89,10 +89,10 @@ exports.folder_delete_post = asyncHandler(async (req, res, next) => {
       },
     });
 
-    res.redirect("/drive");
+    res.redirect('/drive');
   } catch (error) {
-    console.error("Error deleting folder:", error.message);
-    res.status(500).json({ error: "Failed to delete folder" });
+    console.error('Error deleting folder:', error.message);
+    res.status(500).json({ error: 'Failed to delete folder' });
   }
 });
 
@@ -105,10 +105,10 @@ exports.folder_rename_post = asyncHandler(async (req, res, next) => {
       where: { id: folderId },
       data: { name: newName },
     });
-    res.redirect("/drive");
+    res.redirect('/drive');
   } catch (error) {
-    console.log("Error renaming folder", error);
-    res.status(500).send("Error renaming folder");
+    console.log('Error renaming folder', error);
+    res.status(500).send('Error renaming folder');
   }
 });
 
@@ -125,19 +125,19 @@ exports.folder_detail_get = asyncHandler(async (req, res, next) => {
     });
 
     if (!folderDetail) {
-      return res.status(404).send("Folder not found");
+      return res.status(404).send('Folder not found');
     }
 
-    res.render("drive", {
+    res.render('drive', {
       folderDetail: folderDetail,
-      action: "folder-detail",
+      action: 'folder-detail',
       parentFolderId: folderDetail.parentId,
       files: folderDetail.files,
       subfolders: folderDetail.children,
       parentFolderId: folderDetail.parentId,
     });
   } catch (error) {
-    console.error("Error fetching folder details:", error.message);
-    res.status(500).send("Server Error: " + error.message);
+    console.error('Error fetching folder details:', error.message);
+    res.status(500).send('Server Error: ' + error.message);
   }
 });

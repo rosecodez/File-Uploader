@@ -1,18 +1,19 @@
-const asyncHandler = require("express-async-handler");
-const prisma = require("../prisma/prisma");
+const asyncHandler = require('express-async-handler');
+const prisma = require('../prisma/prisma');
 
 exports.new_file_get = asyncHandler(async (req, res, next) => {
-  res.render("new-file-form");
+  res.render('new-file-form');
 });
 
 exports.new_file_post = asyncHandler(async (req, res, next) => {
   try {
     const { name, parentId } = req.body;
     const userId = req.user.id;
+
     if (!req.file) {
-      return res.status(400).json({ error: "No file uploaded" });
+      return res.status(400).json({ error: 'No file uploaded' });
     }
-    console.log("Uploaded file details:", req.file);
+    console.log(req.file);
     await prisma.file.create({
       data: {
         name,
@@ -30,11 +31,11 @@ exports.new_file_post = asyncHandler(async (req, res, next) => {
       },
     });
     res.redirect(
-      parentId ? `/drive/folders/${parentId}/folder-detail` : "/drive"
+      parentId ? `/drive/folders/${parentId}/folder-detail` : '/drive'
     );
   } catch (error) {
-    console.error("Error during file upload to Prisma:", error);
-    res.status(500).json({ error: "Failed to upload file" });
+    console.error('Error during file upload to Prisma:', error);
+    res.status(500).json({ error: 'Failed to upload file' });
   }
 });
 
@@ -47,15 +48,15 @@ exports.file_delete_get = asyncHandler(async (req, res, next) => {
     });
 
     if (!file) {
-      const err = new Error("Folder not found");
+      const err = new Error('Folder not found');
       err.status = 404;
       return next(err);
     }
 
-    res.render("delete-file-form", { file });
+    res.render('delete-file-form', { file });
   } catch (error) {
-    console.error("Error finding file:", error.message);
-    res.status(500).json({ error: "Failed to retrieve file" });
+    console.error('Error finding file:', error.message);
+    res.status(500).json({ error: 'Failed to retrieve file' });
   }
 });
 
@@ -68,10 +69,10 @@ exports.file_delete_post = asyncHandler(async (req, res, next) => {
         id: fileId,
       },
     });
-    res.redirect("/drive");
+    res.redirect('/drive');
   } catch (error) {
-    console.error("Error deleting file:", error.message);
-    res.status(500).json({ error: "Failed to delete file" });
+    console.error('Error deleting file:', error.message);
+    res.status(500).json({ error: 'Failed to delete file' });
   }
 });
 
@@ -84,10 +85,10 @@ exports.file_rename_post = asyncHandler(async (req, res, next) => {
       where: { id: fileId },
       data: { name: newName },
     });
-    res.redirect("/drive");
+    res.redirect('/drive');
   } catch (error) {
-    console.log("Error renaming file", error);
-    res.status(500).send("Error renaming file");
+    console.log('Error renaming file', error);
+    res.status(500).send('Error renaming file');
   }
 });
 
@@ -99,20 +100,20 @@ exports.file_detail_get = asyncHandler(async (req, res, next) => {
     });
 
     if (!file) {
-      return res.status(404).render("404", { message: "File not found" });
+      return res.status(404).render('404', { message: 'File not found' });
     }
 
     const parentFolderId = file.folderId || null;
 
-    res.render("drive", {
-      action: "file-detail",
+    res.render('drive', {
+      action: 'file-detail',
       fileDetail: file,
       parentFolderId,
       files: [],
       rootFolders: [],
     });
   } catch (error) {
-    console.error("Failed to retrieve file details:", error);
-    res.status(500).json({ error: "Failed to retrieve file details" });
+    console.error('Failed to retrieve file details:', error);
+    res.status(500).json({ error: 'Failed to retrieve file details' });
   }
 });

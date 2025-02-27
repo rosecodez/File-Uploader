@@ -17,5 +17,4 @@ router.post("/:id/rename", fileController.file_rename_post);
 // file detail
 router.get("/:id/file-detail", fileController.file_detail_get);
 
-router;
 module.exports = router;
