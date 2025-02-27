@@ -69,13 +69,21 @@ exports.user_login_post = [
   }),
   asyncHandler(async (req, res, next) => {
     try {
+      console.log(req.user);
       const user = req.user;
 
       if (user) {
         req.session.userId = user.id;
         req.session.user = { id: user.id, username: user.username };
 
-        res.redirect('/drive');
+        req.session.save((err) => {
+          if (err) {
+            console.error(err);
+            return next(err);
+          }
+          console.log('session saved correctly');
+          res.redirect('/drive');
+        });
       } else {
         res.status(401).send('Invalid credentials');
       }
