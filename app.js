@@ -34,7 +34,6 @@ app.use(
       maxAge: 7 * 24 * 60 * 60 * 1000,
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      secure: false,
     },
     secret: process.env.SESSION_SECRET,
     resave: false,
@@ -64,12 +63,14 @@ passport.use(
 );
 
 passport.serializeUser((user, done) => {
+  console.log(user.id);
   done(null, user.id);
 });
 
 passport.deserializeUser(async (id, done) => {
   try {
     const user = await prisma.user.findUnique({ where: { id } });
+    console.log(user);
     done(null, user);
   } catch (err) {
     done(err);
@@ -78,11 +79,8 @@ passport.deserializeUser(async (id, done) => {
 
 // Middleware for logging
 app.use((req, res, next) => {
-  res.locals.user = req.user;
-  next();
-});
-app.use((req, res, next) => {
-  console.log('Session User ID:', req.session.userId);
+  res.locals.user = req.session.user;
+  console.log(req.session.user);
   next();
 });
 
