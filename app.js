@@ -22,6 +22,7 @@ app.set('view engine', 'ejs');
 app.use(expressLayouts);
 app.set('layout', 'layout');
 app.use(express.static(path.join(__dirname, 'public')));
+app.set('trust proxy', 1);
 
 const prismaSessionStore = new PrismaSessionStore(prisma, {
   checkPeriod: 2 * 60 * 1000,
@@ -33,7 +34,7 @@ app.use(
     cookie: {
       maxAge: 7 * 24 * 60 * 60 * 1000,
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
+      secure: true,
     },
     secret: process.env.SESSION_SECRET,
     resave: false,
