@@ -40,7 +40,7 @@ app.use(
     resave: false,
     saveUninitialized: false,
     store: prismaSessionStore,
-    samesite: 'lax',
+    sameSite: 'none',
   })
 );
 
