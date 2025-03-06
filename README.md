@@ -1,35 +1,35 @@
 # File-Uploader
 
-Live Project: https://file-uploader-xoxo.onrender.com/
+**Live Project**: https://file-uploader-xoxo.onrender.com/
 
-File-Uploader is a full stack app that enables users to create, organize, and manage files and folders in a hierarchical structure.
+**File-Uploader** is a full stack app that enables users to create, organize, and manage files and folders in a hierarchical structure.
+
+## Demo
 
 ![](gif.gif)
 
 ## Features
 
-- Nested tree structure for organizing folders and files
-- Session-based authentication with Express and PassportJS
-- Persistent session storage using Prisma session store
-- Recursive rendering of nested folders and files using EJS
-- Direct file uploads with Multer and Cloudinary
-- File download option
-- Handles various file types with type and size validation
+- **Nested tree structure**: For organizing folders and files
+- **Session-based authentication**: With Express and PassportJS
+- Persistent session storage using **Prisma session store**
+- Rendering of **nested folders** and files using **EJS**
+- **Direct file uploads** with Multer and Cloudinary
+- **File download option**
 
 ## Technologies Used
 
-- **Prisma**: For data modeling and managing PostgreSQL, offering type safety and easy migrations
-- **PostgreSQL**: Relational database for managing hierarchical folder and file structures
-- **Express.js**: Backend framework for building RESTful APIs and managing middleware
+- **Prisma & PostgreSQL**:ORM & relational database for structured data
+- **Express.js**: Backend framework for RESTful APIs & middleware management
 - **PassportJS**: Secure session-based authentication
-- **Cloudinary**: File uploads
-- **EJS**: For rendering dynamic content and recursive folder/file displays
+- **Cloudinary**: File uploads & cloud storage
+- **EJS**: Rendering dynamic content and folder/file displays
 
 ## Challenges Faced
 
-- **Session persistence**: Handling logged in user session
+- **Session persistence**: Ensured smooth login session handling across requests
 - **Data Modeling with Prisma**: Ensuring model properties in Prisma matched the data types expected in the frontend to avoid type errors during CRUD operations.
-- **Type Conversions**: Handled `req.params` string to integer conversions using `parseInt`, critical for correctly linking parent-child relationships in the folder structure.
+- **Type Conversions**: Used parseInt to correctly process req.params for folder hierarchy
 
 ## Future Enhancements
 
