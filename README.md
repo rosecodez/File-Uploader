@@ -2,7 +2,9 @@
 
 Live Project: https://file-uploader-xoxo.onrender.com/
 
-File-Uploader is a full stack app that enables users to create, organize, and manage files and folders in a hierarchical structure. Built with Prisma, PostgreSQL, Express, and Cloudinary, the application demonstrates data modeling, session management, and file handling capabilities, making it a powerful tool for structured file management and storage.
+File-Uploader is a full stack app that enables users to create, organize, and manage files and folders in a hierarchical structure.
+
+![](gif.gif)
 
 ## Features
 
@@ -25,6 +27,7 @@ File-Uploader is a full stack app that enables users to create, organize, and ma
 
 ## Challenges Faced
 
+- **Session persistence**: Handling logged in user session
 - **Data Modeling with Prisma**: Ensuring model properties in Prisma matched the data types expected in the frontend to avoid type errors during CRUD operations.
 - **Type Conversions**: Handled `req.params` string to integer conversions using `parseInt`, critical for correctly linking parent-child relationships in the folder structure.
 
