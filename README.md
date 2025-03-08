@@ -6,7 +6,7 @@
 
 ## Demo
 
-![](gif.gif)
+![](file-uploader.gif)
 
 ## Features
 
